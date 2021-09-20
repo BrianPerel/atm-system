@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<project name="ATM-system" default="clean" basedir=".">
+
+	<property name="version.num" value="v1.0" />
+	<property name="src.dir" value="src" />
+	<property name="build.dir" value="build" />
+	<property name="classes.dir" value="${build.dir}/classes" />
+	<property name="jar.dir" value="${build.dir}/jar" />
+	<property name="release.dir" value="${build.dir}/release" />
+	<property name="launch4j.dir" value="Launch4j" />
+	<property name="min.jre.version" value="1.8.0" />
+	<property name="res.dir" value="res" />
+	
+	<!-- creates the launch4j task --> 
+		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${launch4j.dir}/launch4j.jar
+		        :${launch4j.dir}/lib/xstream.jar" />
+
+	<target name="clean" description="cleans all build generated folders">
+		<delete dir="build" />
+	</target>
+
+	<target name="compile" description="compile's src files">
+		<mkdir dir="${classes.dir}" />
+		<javac includeantruntime="false" srcdir="${src.dir}/atm" destdir="${classes.dir}" compiler="modern" />
+	</target>
+	
+	<target name="jar" depends="compile" description="create associated .jar file">
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/atm-${version.num}.jar" basedir="${classes.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="atm.ATM_Machine_Main" />
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="run jar" depends="jar" description="run the app">
+		<java jar="${jar.dir}/atm-${version.num}.jar" fork="true" />
+	</target>
+	
+	<!-- create calculator.exe target --> 
+	<target name="create atm.exe" depends="jar" description="create .exe file">
+		<launch4j>
+		  <config headerType="gui" outfile="atm.exe" 
+		      dontWrapJar="false" jarPath="${jar.dir}/atm-${version.num}.jar" 
+		  	  icon="${res.dir}/atm.ico">
+		    <jre minVersion="${min.jre.version}">
+		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
+		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
+		    </jre>
+		  </config>
+		</launch4j>
+		
+		<move file="atm.exe" todir="${release.dir}" />
+	</target>
+</project>
