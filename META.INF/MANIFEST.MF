@@ -1,0 +1,5 @@
+Main-Class: ATM_Machine_Main
+Manifest-Version: 1.0
+Created-By: Brian Perel
+Class-Path: mysql-connector-java-8.0.19.jar
+icon: atm.ico
