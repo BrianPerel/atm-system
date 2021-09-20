@@ -1,4 +1,5 @@
 package atm;
+
 import java.text.DecimalFormat;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -6,14 +7,14 @@ import javax.swing.JOptionPane;
 import java.util.InputMismatchException;
 import java.sql.*;
 
-
 /**
- * Inherit ATM program for primary methods / operations
- * Performs deposit ATM operation
- *	-asks for deposit amount, checks amount range and format, performs op
+ * Inherit ATM program for primary methods / operations Performs deposit ATM
+ * operation -asks for deposit amount, checks amount range and format, performs
+ * op
  */
 class DepositFunds extends ATM {
-	static DecimalFormat df = new DecimalFormat("$###,###.00");   // for decimal rounding (to 2 places, plus $ and comma insertion)
+	static DecimalFormat df = new DecimalFormat("$###,###.00"); // for decimal rounding (to 2 places, plus $ and comma
+																// insertion)
 	private final Account account;
 
 	public DepositFunds(Account account) {
@@ -30,10 +31,10 @@ class DepositFunds extends ATM {
 			money0 = JOptionPane.showInputDialog(null, "\n\nDeposit amount: $", "Deposit",
 					JOptionPane.QUESTION_MESSAGE);
 
-			if (money0.matches("[0-9.]+") == false)
+			if (!money0.matches("[0-9.]+"))
 				JOptionPane.showMessageDialog(null, "Invalid amount!", "Warning", JOptionPane.WARNING_MESSAGE);
 
-		} while (money0.matches("[0-9.]+") == false);
+		} while (!money0.matches("[0-9.]+"));
 
 		double money = Double.parseDouble(money0);
 		file.println("\n\tDeposit amount: $" + money);
@@ -51,8 +52,7 @@ class DepositFunds extends ATM {
 				DBConnector connect = new DBConnector(); // connect class to DB class to perform db operations
 				String bal = df.format(account.getBalance()); // get balance and format it
 				connect.updateData(bal, Integer.parseInt(account.getAcctNo())); // add data to db
-			}
-			catch(SQLException ex) {
+			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
 		} else {

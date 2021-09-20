@@ -1,4 +1,5 @@
 package atm;
+
 import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
 import java.io.PrintWriter;
@@ -6,18 +7,18 @@ import java.util.InputMismatchException;
 import java.io.IOException;
 import java.sql.*;
 
-
 /**
- * Inherit ATM program for primary methods / operations
- * Performs transfer operations
- * 	-prompt for transfer amount, ask for account to transfer to, check boundary range and format, perform op
- *	-performs file write while class is executed
+ * Inherit ATM program for primary methods / operations Performs transfer
+ * operations -prompt for transfer amount, ask for account to transfer to, check
+ * boundary range and format, perform op -performs file write while class is
+ * executed
  */
 class TransferFunds extends ATM {
 
 	private final Account account; // first account, transfer funds from
 	private final Account account2; // second account, transfer funds to
-	static DecimalFormat df = new DecimalFormat("$###,###.00"); // formatting to make values include a '$', commas, and rounding to 2 places
+	static DecimalFormat df = new DecimalFormat("$###,###.00"); // formatting to make values include a '$', commas, and
+																// rounding to 2 places
 
 	public TransferFunds(Account account, Account account2) {
 		super(account);
@@ -30,14 +31,16 @@ class TransferFunds extends ATM {
 
 		String money0;
 
-		// amount entered must be of numeric format, re-prompt every time format is incorrect
+		// amount entered must be of numeric format, re-prompt every time format is
+		// incorrect
 		do {
 			money0 = JOptionPane.showInputDialog(null, "\nTransfer amount: $", "ATM", JOptionPane.QUESTION_MESSAGE);
 
-			if (money0.matches("[0-9.]+") == false)
+			if (!money0.matches("[0-9.]+")) {
 				JOptionPane.showMessageDialog(null, "Invalid amount!", "Warning", JOptionPane.WARNING_MESSAGE);
+			}
 
-		} while (money0.matches("[0-9.]+") == false);
+		} while (!money0.matches("[0-9.]+"));
 
 		double money = Double.parseDouble(money0);
 		file.print("\n\tTransfer amount: $" + money);
@@ -53,17 +56,16 @@ class TransferFunds extends ATM {
 					"ATM - City Central Bank", JOptionPane.QUESTION_MESSAGE);
 
 			file.printf("Transfer complete! Your New Balance for Account " + account.getAcctNo() + " is: "
-					+ df.format(this.account.getBalance()) + "\nYour New Balance for Account " + this.account2.getAcctNo()
-					+ " is: " + df.format(this.account2.getBalance()));
-
+					+ df.format(this.account.getBalance()) + "\nYour New Balance for Account "
+					+ this.account2.getAcctNo() + " is: " + df.format(this.account2.getBalance()));
+			
 			// update db record in table (since withdraw op performed on account)
 			try {
 				// create connection ptr to database
 				DBConnector connect = new DBConnector(); // connect class to DB class to perform db operations
 				String bal = df.format(account.getBalance()); // get balance and format it
 				connect.updateData(bal, Integer.parseInt(account.getAcctNo())); // add data to db
-			}
-			catch(SQLException ex) {
+			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
 

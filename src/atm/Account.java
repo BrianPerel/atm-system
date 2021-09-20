@@ -1,10 +1,12 @@
 package atm;
+
 /**
- * Class to setup Account object, use Serializable interface to use serialize operations
- * Attributes: account type, number, pin, balance
+ * Class to setup Account object, use Serializable interface to use serialize
+ * operations Attributes: account type, number, pin, balance
  */
 class Account implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private int number;
 	private String acctNo;
 	private String pin;
@@ -46,8 +48,9 @@ class Account implements java.io.Serializable {
 	public void setBalance(double balance) throws IllegalArgumentException {
 		this.balance = balance;
 
-		if (balance < 0)
+		if (balance < 0) {
 			throw new IllegalArgumentException("Value less than 0!");
+		}
 	}
 
 	public void setType(String acctType) {
@@ -83,10 +86,7 @@ class Account implements java.io.Serializable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == null || !(o instanceof Account) || o != this) {
-			return false;
-		} else
-			return true;
+		return !(o instanceof Account) || o != this;
 	}
 
 	@Override

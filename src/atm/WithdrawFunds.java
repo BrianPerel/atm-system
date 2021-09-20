@@ -1,4 +1,5 @@
 package atm;
+
 import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
 import java.io.PrintWriter;
@@ -6,12 +7,10 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.sql.*;
 
-
 /**
- * Inherit ATM program for primary methods / operations
- * Performs withdraw operations
- * 	-prompt for withdraw amount, check valid range and format, perform op
- * 	-program writes to file while class is executed
+ * Inherit ATM program for primary methods / operations Performs withdraw
+ * operations -prompt for withdraw amount, check valid range and format, perform
+ * op -program writes to file while class is executed
  */
 class WithdrawFunds extends ATM {
 
@@ -30,12 +29,14 @@ class WithdrawFunds extends ATM {
 
 		// check for numeric input format, loop until correct format entered
 		do {
-			money0 = JOptionPane.showInputDialog(null, "\nWithdraw amount: $", "Withdraw", JOptionPane.QUESTION_MESSAGE);
+			money0 = JOptionPane.showInputDialog(null, "\nWithdraw amount: $", "Withdraw",
+					JOptionPane.QUESTION_MESSAGE);
 
-			if (money0.matches("[0-9.]+") == false)
+			if (!money0.matches("[0-9.]+")) {
 				JOptionPane.showMessageDialog(null, "Invalid amount!", "Warning", JOptionPane.WARNING_MESSAGE);
+			}
 
-		} while (money0.matches("[0-9.]+") == false);
+		} while (!money0.matches("[0-9.]+"));
 
 		final double money = Double.parseDouble(money0);
 		file.print("\n\tWithdraw amount: $" + money);
@@ -53,10 +54,9 @@ class WithdrawFunds extends ATM {
 			try {
 				// create connection ptr to database
 				DBConnector connect = new DBConnector(); // connect class to DB class to perform db operations
-		     	String bal = df.format(account.getBalance()); // get balance and format it
-	    		connect.updateData(bal, Integer.parseInt(account.getAcctNo())); // add data to db
-			}
-			catch(SQLException ex) {
+				String bal = df.format(account.getBalance()); // get balance and format it
+				connect.updateData(bal, Integer.parseInt(account.getAcctNo())); // add data to db
+			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
 
