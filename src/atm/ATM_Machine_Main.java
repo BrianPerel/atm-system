@@ -144,10 +144,6 @@ public class ATM_Machine_Main extends JFrame {
 			if (option == 0) { // pressing OK button
 				char[] password = pass.getPassword();
 				pin = new String(password);
-			} else if (option == 1) { // pressing Cancel button
-				file.close();
-				receiptFile.delete();
-				System.exit(0);
 			} else {
 				file.close();
 				receiptFile.delete();
@@ -277,7 +273,7 @@ public class ATM_Machine_Main extends JFrame {
 					// terminate account
 					case "4": {
 						if (isAcctTerminated) {
-							JOptionPane.showMessageDialog(null, "Account is already empty!", WARNING,
+							JOptionPane.showMessageDialog(null, "Account is already terminated!", WARNING,
 									JOptionPane.WARNING_MESSAGE);
 							continue;
 						}
