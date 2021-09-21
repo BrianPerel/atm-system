@@ -3,3 +3,4 @@ build/
 *.class
 Launch4j/
 docs/
+*.dat

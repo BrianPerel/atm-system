@@ -6,7 +6,9 @@ package atm;
  */
 class Account implements java.io.Serializable {
 
-	private static final long serialVersionUID = 1L;
+	
+	// generated serializable ID value
+	private static final long serialVersionUID = 7843771383668803493L;
 	private int number;
 	private String acctNo;
 	private String pin;
@@ -27,8 +29,9 @@ class Account implements java.io.Serializable {
 		this.pin = pin;
 		this.acctType = acctType;
 
-		if (balance < 0)
+		if (balance < 0) {
 			throw new IllegalArgumentException("Value less than 0!");
+		}
 
 		this.balance = balance;
 	}

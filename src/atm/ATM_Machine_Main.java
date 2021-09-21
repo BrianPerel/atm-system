@@ -55,6 +55,7 @@ public class ATM_Machine_Main extends JFrame {
 	static String pin = "";
 	static String acctNo;
 	static String savCheck0;
+	static final String WARNING = "Warning";
 	static final String GOODBYE = "Goodbye";
 	static final String ZERO_TO_NINE_REG_EXP = "[0-9]+";
 	static final String HEADER_TITLE = "ATM - City Central Bank";
@@ -108,11 +109,11 @@ public class ATM_Machine_Main extends JFrame {
 				System.exit(0);
 			}
 
-			file.printf("\n\tATM - City Central Bank\nToday is: %s\n", now.format(tf));
+			file.printf("%n\tATM - City Central Bank%nToday is: %s%n", now.format(tf));
 			attempts++;
 
 			if (acctNo.length() != 8 || !(acctNo.matches(ZERO_TO_NINE_REG_EXP))) {
-				JOptionPane.showMessageDialog(null, "Invalid Account Number!", "Warning", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Invalid Account Number!", WARNING, JOptionPane.WARNING_MESSAGE);
 			}
 
 		} while (acctNo.length() != 8 || !(acctNo.matches(ZERO_TO_NINE_REG_EXP)));
@@ -156,7 +157,7 @@ public class ATM_Machine_Main extends JFrame {
 			attempts++;
 
 			if (pin.length() != 4 || !(pin.matches(ZERO_TO_NINE_REG_EXP))) {
-				JOptionPane.showMessageDialog(null, "Invalid Pin Number!", "Warning", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Invalid Pin Number!", WARNING, JOptionPane.WARNING_MESSAGE);
 			}
 
 		} while (pin.length() != 4 || !(pin.matches(ZERO_TO_NINE_REG_EXP)));
@@ -170,7 +171,7 @@ public class ATM_Machine_Main extends JFrame {
 							HEADER_TITLE, JOptionPane.QUESTION_MESSAGE);
 
 					if (savCheck0.equals("")) {
-						JOptionPane.showMessageDialog(null, "Invalid Response!", "Warning",
+						JOptionPane.showMessageDialog(null, "Invalid Response!", WARNING,
 								JOptionPane.WARNING_MESSAGE);
 					}
 
@@ -186,7 +187,7 @@ public class ATM_Machine_Main extends JFrame {
 			savingsCheckingsOption = Character.toUpperCase(savCheck0.charAt(0)) + savCheck0.substring(1);
 
 			if (!(savingsCheckingsOption.equals("S")) && !(savingsCheckingsOption.equals("C")) && !(savingsCheckingsOption.equals("Savings") && !(savingsCheckingsOption.equals("Checkings")))) {
-				JOptionPane.showMessageDialog(null, "Invalid option!", "Warning", JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Invalid option!", WARNING, JOptionPane.WARNING_MESSAGE);
 			}
 
 		} while (!savingsCheckingsOption.matches("[a-zA-Z]+") || (!(savingsCheckingsOption.equals("S")) && !(savingsCheckingsOption.equals("C")) && !(savingsCheckingsOption.equals("Savings") && !(savingsCheckingsOption.equals("Checkings")))));
@@ -242,7 +243,7 @@ public class ATM_Machine_Main extends JFrame {
 									JOptionPane.INFORMATION_MESSAGE);
 							file.print("\nBalance inquiry...\n" + account);
 						} else if (account == null) {
-							JOptionPane.showMessageDialog(null, "Account is empty", "Warning!",
+							JOptionPane.showMessageDialog(null, "Account is empty", WARNING,
 									JOptionPane.WARNING_MESSAGE);
 							file.print("Balance inquiry...\n\tAccount doesn't exist");
 						}
@@ -252,7 +253,7 @@ public class ATM_Machine_Main extends JFrame {
 					// withdraw funds
 					case "2": {
 						if (isAcctTerminated) {
-							JOptionPane.showMessageDialog(null, "Account is empty, can't withdraw!", "Warning!",
+							JOptionPane.showMessageDialog(null, "Account is empty, can't withdraw!", WARNING,
 									JOptionPane.WARNING_MESSAGE);
 							continue;
 						}
@@ -264,7 +265,7 @@ public class ATM_Machine_Main extends JFrame {
 					// deposit funds
 					case "3": {
 						if (isAcctTerminated) {
-							JOptionPane.showMessageDialog(null, "Account is empty, can't deposit!", "Warning!",
+							JOptionPane.showMessageDialog(null, "Account is empty, can't deposit!", WARNING,
 									JOptionPane.WARNING_MESSAGE);
 							continue;
 						}
@@ -276,7 +277,7 @@ public class ATM_Machine_Main extends JFrame {
 					// terminate account
 					case "4": {
 						if (isAcctTerminated) {
-							JOptionPane.showMessageDialog(null, "Account is already empty!", "Warning!",
+							JOptionPane.showMessageDialog(null, "Account is already empty!", WARNING,
 									JOptionPane.WARNING_MESSAGE);
 							continue;
 						}
@@ -296,7 +297,7 @@ public class ATM_Machine_Main extends JFrame {
 					// transfer funds
 					case "5": {
 						if (isAcctTerminated) {
-							JOptionPane.showMessageDialog(null, "Account is empty, can't transfer!", "Warning!",
+							JOptionPane.showMessageDialog(null, "Account is empty, can't transfer!", WARNING,
 									JOptionPane.WARNING_MESSAGE);
 							continue;
 						}
@@ -307,7 +308,7 @@ public class ATM_Machine_Main extends JFrame {
 									JOptionPane.QUESTION_MESSAGE);
 							if (acctNo.equals(acctNo2) || acctNo2.length() < 8 || acctNo2.length() > 8
 									|| !(acctNo2.matches(ZERO_TO_NINE_REG_EXP))) {
-								JOptionPane.showMessageDialog(null, "Invalid Account!", "Warning!",
+								JOptionPane.showMessageDialog(null, "Invalid Account!", WARNING,
 										JOptionPane.WARNING_MESSAGE);
 							}
 						} while (acctNo.equals(acctNo2)
@@ -321,7 +322,7 @@ public class ATM_Machine_Main extends JFrame {
 					// save (serialize) object
 					case "6": {
 						if (isAcctTerminated) {
-							JOptionPane.showMessageDialog(null, "Account is empty, can't serialize!", "Warning!",
+							JOptionPane.showMessageDialog(null, "Account is empty, can't serialize!", WARNING,
 									JOptionPane.WARNING_MESSAGE);
 							continue;
 						}
@@ -352,7 +353,7 @@ public class ATM_Machine_Main extends JFrame {
 					// load (deserialize) object
 					case "7": {
 						if (isAcctTerminated) {
-							JOptionPane.showMessageDialog(null, "Account is empty, can't serialize!", "Warning!",
+							JOptionPane.showMessageDialog(null, "Account is empty, can't serialize!", WARNING,
 									JOptionPane.WARNING_MESSAGE);
 							continue;
 						}
@@ -394,8 +395,10 @@ public class ATM_Machine_Main extends JFrame {
 								JOptionPane.QUESTION_MESSAGE);
 	
 						file.close();
+						
 						in = in.substring(0, 1).toUpperCase() + in.substring(1);
-						if ((in.equals("No") || in.equals("N"))) {
+						
+						if (in.equals("No") || in.equals("N") || in.equals("Cancel")) {
 							fileMain.delete();
 							JOptionPane.showMessageDialog(null, "\nHave a nice day!", GOODBYE,
 									JOptionPane.QUESTION_MESSAGE);
@@ -414,13 +417,13 @@ public class ATM_Machine_Main extends JFrame {
 					}
 	
 					default: {
-						JOptionPane.showMessageDialog(null, "Invalid option!", "Warning", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Invalid option!", WARNING, JOptionPane.WARNING_MESSAGE);
 						break;
 					}
 				}
 
 			} catch (InputMismatchException inputMismatchException) {
-				JOptionPane.showMessageDialog(null, "\tError! Enter a number choice. Invalid option!\n", "Warning",
+				JOptionPane.showMessageDialog(null, "\tError! Enter a number choice. Invalid option!\n", WARNING,
 						JOptionPane.WARNING_MESSAGE);
 				input.nextLine();
 			} catch (NullPointerException e) {

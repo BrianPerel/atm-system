@@ -31,9 +31,10 @@ class DepositFunds extends ATM {
 			money0 = JOptionPane.showInputDialog(null, "\n\nDeposit amount: $", "Deposit",
 					JOptionPane.QUESTION_MESSAGE);
 
-			if (!money0.matches("[0-9.]+"))
+			if (!money0.matches("[0-9.]+")) {
 				JOptionPane.showMessageDialog(null, "Invalid amount!", "Warning", JOptionPane.WARNING_MESSAGE);
-
+			}
+				
 		} while (!money0.matches("[0-9.]+"));
 
 		double money = Double.parseDouble(money0);

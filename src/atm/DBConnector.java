@@ -1,12 +1,18 @@
 package atm;
 
-import java.sql.*; // JDBC (Java Database Connectivity class) import package: driver (connector) -> package that allows you to connect your Java program to a mysql database
+/*
+ * JDBC (Java Database Connectivity class) 
+ * import package: driver (connector) -> package that allows you to connect your Java program to a mysql database
+ */
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DBConnector {
 
 	private Connection con;
 	private Statement st;
-	private ResultSet rs;
 
 	public DBConnector() throws SQLException { // constructor -> establishes connection and creates DB (NOTE: make sure
 												// to launch apache and mysql)
@@ -42,7 +48,7 @@ public class DBConnector {
 
 		try {
 			// create table
-			Statement st = con.createStatement();
+			st = con.createStatement();
 			System.out.println("Creating table...");
 			st.executeUpdate("CREATE TABLE IF NOT EXISTS Accounts "
 					+ "(Account_Number INT, Pin INT, Account_Balance VARCHAR(30), Account_Type VARCHAR(30))");
@@ -63,8 +69,7 @@ public class DBConnector {
 	public void updateData(String bal, int acctNo) throws SQLException {
 		try {
 			// update record in db
-			Statement st = con.createStatement();
-
+			st = con.createStatement();
 			System.out.println("Updating record...");
 			st.executeUpdate(
 					"UPDATE Accounts SET Account_Balance= " + "\'" + bal + "\'" + " WHERE Account_Number=" + acctNo);
@@ -80,7 +85,7 @@ public class DBConnector {
 	public void terminateAccount(int acctNo) throws SQLException {
 		// delete record from table 'Accounts'
 		try {
-			Statement st = con.createStatement();
+			st = con.createStatement();
 			st.executeUpdate("DELETE FROM Accounts WHERE Account_Number= " + acctNo);
 			System.out.println("Account deleted successfully...");
 		} catch (SQLException ex) {
