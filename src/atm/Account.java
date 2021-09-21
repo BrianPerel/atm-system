@@ -80,7 +80,7 @@ class Account implements java.io.Serializable {
 	@Override
 	public String toString() {
 		return String.format(
-				"\tAccount number: %s\n\tPIN number: %s" + "\n\tAccount balance: $%,.2f\n\tAccount type: %s\n",
+				"\tAccount number: %s%n\tPIN number: %s%n\tAccount balance: $%,.2f%n\tAccount type: %s%n",
 				this.acctNo, this.pin, this.balance, this.acctType);
 	}
 

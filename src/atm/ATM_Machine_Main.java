@@ -73,17 +73,17 @@ public class ATM_Machine_Main extends JFrame {
 		 * p0.destroy(); // close xampp app
 		 */
 
-		final File fileMain = new File("Receipt.txt");
-		final PrintWriter file = new PrintWriter(fileMain);
+		final File receiptFile = new File("Receipt.txt");
+		final PrintWriter file = new PrintWriter(receiptFile);
 
-		int attempt = 0;
+		int attempts = 0;
 
 		do {			
-			if (attempt == 3) {
+			if (attempts == 3) {
 				JOptionPane.showMessageDialog(null, "Max tries exceeded, ATM System locked! Restart to unlock", "ATM",
 						JOptionPane.WARNING_MESSAGE);
 				file.close();
-				fileMain.delete();
+				receiptFile.delete();
 				System.exit(0);
 			}
 
@@ -94,22 +94,22 @@ public class ATM_Machine_Main extends JFrame {
 			try {
 				acctNo = JOptionPane.showInputDialog(null, "Today is: " + now.format(tf) + "\nAccount Number: ",
 						HEADER_TITLE, JOptionPane.QUESTION_MESSAGE);
+				
+				if (acctNo.equals("cancel")) {
+					JOptionPane.showMessageDialog(null, "Have a nice day!", GOODBYE, JOptionPane.QUESTION_MESSAGE);
+					file.close();
+					receiptFile.delete();
+					System.exit(0);
+				}
 
 			} catch (NullPointerException e) {
 				file.close();
-				fileMain.delete();
+				receiptFile.delete();
 				System.exit(0);
 			}
 
 			file.printf("\n\tATM - City Central Bank\nToday is: %s\n", now.format(tf));
-			attempt++;
-
-			if (acctNo.equals("cancel")) {
-				JOptionPane.showMessageDialog(null, "Have a nice day!", GOODBYE, JOptionPane.QUESTION_MESSAGE);
-				file.close();
-				fileMain.delete();
-				System.exit(0);
-			}
+			attempts++;
 
 			if (acctNo.length() != 8 || !(acctNo.matches(ZERO_TO_NINE_REG_EXP))) {
 				JOptionPane.showMessageDialog(null, "Invalid Account Number!", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -117,21 +117,21 @@ public class ATM_Machine_Main extends JFrame {
 
 		} while (acctNo.length() != 8 || !(acctNo.matches(ZERO_TO_NINE_REG_EXP)));
 
-		attempt = 0;
+		attempts = 0;
 
 		do {
-			if (attempt == 3) {
+			if (attempts == 3) {
 				JOptionPane.showMessageDialog(null, "Max tries exceeded, ATM System locked! Restart to unlock",
 						HEADER_TITLE, JOptionPane.WARNING_MESSAGE);
 				file.close();
-				fileMain.delete();
+				receiptFile.delete();
 				System.exit(0);
 			}
 
 			// create custom pin UI window with input value masking ('*')
 			JPanel panel = new JPanel();
-			String custom = "Pin: ";
-			JLabel label = new JLabel(custom);
+			String pinText = "Pin: ";
+			JLabel label = new JLabel(pinText);
 			JPasswordField pass = new JPasswordField(10);
 			panel.add(label);
 			panel.add(pass);
@@ -141,21 +141,19 @@ public class ATM_Machine_Main extends JFrame {
 					JOptionPane.QUESTION_MESSAGE, null, options, null);
 
 			if (option == 0) { // pressing OK button
-
 				char[] password = pass.getPassword();
 				pin = new String(password);
-
 			} else if (option == 1) { // pressing Cancel button
 				file.close();
-				fileMain.delete();
+				receiptFile.delete();
 				System.exit(0);
 			} else {
 				file.close();
-				fileMain.delete();
+				receiptFile.delete();
 				System.exit(0);
 			}
 
-			attempt++;
+			attempts++;
 
 			if (pin.length() != 4 || !(pin.matches(ZERO_TO_NINE_REG_EXP))) {
 				JOptionPane.showMessageDialog(null, "Invalid Pin Number!", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -163,7 +161,7 @@ public class ATM_Machine_Main extends JFrame {
 
 		} while (pin.length() != 4 || !(pin.matches(ZERO_TO_NINE_REG_EXP)));
 
-		String savCheck;
+		String savingsCheckingsOption;
 
 		do {
 			try {
@@ -171,33 +169,37 @@ public class ATM_Machine_Main extends JFrame {
 					savCheck0 = JOptionPane.showInputDialog(null, "Savings (s) or Checkings (c): ",
 							HEADER_TITLE, JOptionPane.QUESTION_MESSAGE);
 
-					if (savCheck0.equals(""))
+					if (savCheck0.equals("")) {
 						JOptionPane.showMessageDialog(null, "Invalid Response!", "Warning",
 								JOptionPane.WARNING_MESSAGE);
+					}
 
 				} while (savCheck0.equals(""));
 
 			} catch (NullPointerException e) {
 				file.close();
-				fileMain.delete();
+				receiptFile.delete();
 				System.exit(0);
 			}
 
 			savCheck0 = savCheck0.trim();
-			savCheck = Character.toUpperCase(savCheck0.charAt(0)) + savCheck0.substring(1);
+			savingsCheckingsOption = Character.toUpperCase(savCheck0.charAt(0)) + savCheck0.substring(1);
 
-			if (savCheck.length() != 1 || !(savCheck.matches("[A-Za-z]"))
-					|| !(savCheck.equals("S")) && !(savCheck.equals("C")))
+			if (!(savingsCheckingsOption.equals("S")) && !(savingsCheckingsOption.equals("C")) && !(savingsCheckingsOption.equals("Savings") && !(savingsCheckingsOption.equals("Checkings")))) {
 				JOptionPane.showMessageDialog(null, "Invalid option!", "Warning", JOptionPane.WARNING_MESSAGE);
+			}
 
-		} while (!(savCheck.matches("[A-Za-z]")) || (!(savCheck.equals("S")) && !(savCheck.equals("C"))));
+		} while (!savingsCheckingsOption.matches("[a-zA-Z]+") || (!(savingsCheckingsOption.equals("S")) && !(savingsCheckingsOption.equals("C")) && !(savingsCheckingsOption.equals("Savings") && !(savingsCheckingsOption.equals("Checkings")))));
 
 		String savCheck2 = "";
-		if (savCheck.equals("C"))
+		
+		if (savingsCheckingsOption.equals("C") || savingsCheckingsOption.equals("Checkings")) {
 			savCheck2 = "Checkings";
+		}
 
-		else if (savCheck.equals("S"))
+		else if (savingsCheckingsOption.equals("S") || savingsCheckingsOption.equals("Savings")) {
 			savCheck2 = "Savings";
+		}
 
 		// create account
 		Account account = new Account(acctNo, pin, ((Math.random() % 23) * 100000), savCheck2);
@@ -205,7 +207,7 @@ public class ATM_Machine_Main extends JFrame {
 		String select = "0";
 
 		// load to menu
-		menu(account, file, select, savCheck2, fileMain);
+		menu(account, file, select, savCheck2, receiptFile);
 	}
 
 	public static void menu(Account account, PrintWriter file, String select, String savCheck, File fileMain)
@@ -323,7 +325,7 @@ public class ATM_Machine_Main extends JFrame {
 									JOptionPane.WARNING_MESSAGE);
 							continue;
 						}
-						String filename = "Data.dat"; // create binary file (.dat = data file) to save object state to
+						String filename = "AccountData.dat"; // create binary file (.dat = data file) to save object state to
 	
 						// Serialization
 						try {
@@ -354,7 +356,7 @@ public class ATM_Machine_Main extends JFrame {
 									JOptionPane.WARNING_MESSAGE);
 							continue;
 						}
-						String filename = "Data.dat";
+						String filename = "AccountData.dat";
 	
 						Account account1 = null; // create the empty object, request os to allocate chunk of memory to store
 													// contents from file
@@ -392,7 +394,8 @@ public class ATM_Machine_Main extends JFrame {
 								JOptionPane.QUESTION_MESSAGE);
 	
 						file.close();
-						if (in.equals("No") || in.equals("no") || in.equals("NO")) {
+						in = in.substring(0, 1).toUpperCase() + in.substring(1);
+						if ((in.equals("No") || in.equals("N"))) {
 							fileMain.delete();
 							JOptionPane.showMessageDialog(null, "\nHave a nice day!", GOODBYE,
 									JOptionPane.QUESTION_MESSAGE);

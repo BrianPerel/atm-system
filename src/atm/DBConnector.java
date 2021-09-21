@@ -19,7 +19,7 @@ public class DBConnector {
 			// open a connection to localhost and select our database. String literal is
 			// localhost URL, username=root, pass="". If database doesn't exist, exception
 			// is caught and we just connect to the localhost without selecting a db
-			con = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "");
+			con = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "password");
 
 			// create database
 			System.out.println("Creating database...");
@@ -27,7 +27,7 @@ public class DBConnector {
 			String sql = "CREATE DATABASE IF NOT EXISTS atm_database";
 			st.executeUpdate(sql);
 			System.out.println("Database created successfully...");
-			con = DriverManager.getConnection("jdbc:mysql://localhost/atm_database", "root", ""); // select db after
+			con = DriverManager.getConnection("jdbc:mysql://localhost/atm_database", "root", "password"); // select db after
 																									// creating it, if
 																									// it didn't exist
 
@@ -35,10 +35,10 @@ public class DBConnector {
 			System.out.println(ex);
 		} catch (Exception e) {
 			System.out.println(e);
-		}
+		} 
 	}
 
-	public void addData(int acctNo, int pin, String balance, String acctType) {
+	public void addData(int acctNo, int pin, String balance, String acctType) throws SQLException {
 
 		try {
 			// create table
@@ -57,10 +57,10 @@ public class DBConnector {
 			System.out.println(ex);
 		} catch (Exception e) {
 			System.out.println(e);
-		}
+		} 
 	}
 
-	public void updateData(String bal, int acctNo) {
+	public void updateData(String bal, int acctNo) throws SQLException {
 		try {
 			// update record in db
 			Statement st = con.createStatement();
@@ -74,10 +74,10 @@ public class DBConnector {
 			System.out.println(ex);
 		} catch (Exception e) {
 			System.out.println(e);
-		}
+		} 
 	}
 
-	public void terminateAccount(int acctNo) {
+	public void terminateAccount(int acctNo) throws SQLException {
 		// delete record from table 'Accounts'
 		try {
 			Statement st = con.createStatement();

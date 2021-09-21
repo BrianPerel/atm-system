@@ -39,12 +39,13 @@ class DepositFunds extends ATM {
 		double money = Double.parseDouble(money0);
 		file.println("\n\tDeposit amount: $" + money);
 
+		// account amount cannot supersede or excede this amount (1-1000000000)
 		if (money >= 1 && money < 1000000000) {
 			account.setBalance(account.getBalance() + money);
 			file.print("\nDepositing...");
 			JOptionPane.showMessageDialog(null,
 					"Deposit Complete! Your New Balance is: " + df.format(this.account.getBalance()));
-			file.printf("Deposit Complete! Your New Balance is: $%,.2f\n", this.account.getBalance());
+			file.printf("Deposit Complete! Your New Balance is: $%,.2f%n", this.account.getBalance());
 
 			// update db record in table (since withdraw op performed on account)
 			try {
@@ -57,7 +58,7 @@ class DepositFunds extends ATM {
 			}
 		} else {
 			try {
-				JOptionPane.showMessageDialog(null, "\tError: You don't have sufficient funds!", "Warning",
+				JOptionPane.showMessageDialog(null, "\tWarning: You don't have sufficient funds!", "Warning",
 						JOptionPane.WARNING_MESSAGE);
 
 				if (money == 0) {
@@ -67,7 +68,7 @@ class DepositFunds extends ATM {
 					depositCash(file);
 				}
 			} catch (InputMismatchException inputMismatchException) {
-				JOptionPane.showMessageDialog(null, "\tError! Enter a number choice\n", "Warning",
+				JOptionPane.showMessageDialog(null, "\tWarning! Enter a number choice\n", "Warning",
 						JOptionPane.WARNING_MESSAGE);
 				depositCash(file);
 			}
