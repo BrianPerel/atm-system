@@ -2,7 +2,7 @@
 <!DOCTYPE xml>
 <project name="ATM-system" default="clean" basedir=".">
 
-	<property name="version.num" value="v1.0" />
+	<property name="version.num" value="v2.0" />
 	<property name="src.dir" value="src" />
 	<property name="build.dir" value="build" />
 	<property name="classes.dir" value="${build.dir}/classes" />

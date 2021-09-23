@@ -27,6 +27,7 @@ package atm;
 
 import java.util.Scanner;
 import java.util.InputMismatchException;
+import java.util.Random;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -55,12 +56,14 @@ public class ATM_Machine_Main extends JFrame {
 	static String pin = "";
 	static String acctNo;
 	static String savCheck0;
+	static File receiptFile = new File("");
 	static final String WARNING = "Warning";
 	static final String GOODBYE = "Goodbye";
 	static final String ZERO_TO_NINE_REG_EXP = "[0-9]+";
 	static final String HEADER_TITLE = "ATM - City Central Bank";
 	static DecimalFormat df = new DecimalFormat("$###,###.00");
 	static Scanner input = new Scanner(System.in);
+	static Random r = new Random();
 
 	public static void main(String[] args) throws IOException, SQLException {
 
@@ -74,7 +77,13 @@ public class ATM_Machine_Main extends JFrame {
 		 * p0.destroy(); // close xampp app
 		 */
 
-		final File receiptFile = new File("Receipt.txt");
+		// format date and time for display
+		DateTimeFormatter tf = DateTimeFormatter.ofPattern("YYYY-MM-d-");
+		java.time.LocalDateTime now = java.time.LocalDateTime.now();
+		
+		String id = "id" + r.nextInt(99);
+		
+		receiptFile = new File("Receipt." + now.format(tf) + id + ".log");
 		final PrintWriter file = new PrintWriter(receiptFile);
 
 		int attempts = 0;
@@ -89,8 +98,7 @@ public class ATM_Machine_Main extends JFrame {
 			}
 
 			// format date and time for display
-			DateTimeFormatter tf = DateTimeFormatter.ofPattern("MMM dd, h:mm a");
-			java.time.LocalDateTime now = java.time.LocalDateTime.now();
+			tf = DateTimeFormatter.ofPattern("MMM dd, h:mm a");
 
 			try {
 				acctNo = JOptionPane.showInputDialog(null, "Today is: " + now.format(tf) + "\nAccount Number: ",
@@ -186,7 +194,8 @@ public class ATM_Machine_Main extends JFrame {
 				JOptionPane.showMessageDialog(null, "Invalid option!", WARNING, JOptionPane.WARNING_MESSAGE);
 			}
 
-		} while (!savingsCheckingsOption.matches("[a-zA-Z]+") || (!(savingsCheckingsOption.equals("S")) && !(savingsCheckingsOption.equals("C")) && !(savingsCheckingsOption.equals("Savings") && !(savingsCheckingsOption.equals("Checkings")))));
+		} while (!savingsCheckingsOption.matches("[a-zA-Z]+") || (!(savingsCheckingsOption.equals("S"))
+			&& !(savingsCheckingsOption.equals("C")) && !(savingsCheckingsOption.equals("Savings") && !(savingsCheckingsOption.equals("Checkings")))));
 
 		String savCheck2 = "";
 		

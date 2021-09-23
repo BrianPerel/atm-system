@@ -4,3 +4,4 @@ build/
 Launch4j/
 docs/
 *.dat
+*.log
