@@ -51,12 +51,16 @@ public class DBConnector {
 			st = con.createStatement();
 			System.out.println("Creating table...");
 			st.executeUpdate("CREATE TABLE IF NOT EXISTS Accounts "
-					+ "(Account_Number INT, Pin INT, Account_Balance VARCHAR(30), Account_Type VARCHAR(30))");
+					+ "(Account_Number INT PRIMARY KEY, Pin INT, Account_Balance VARCHAR(30), Account_Type VARCHAR(30))");
 			System.out.println("Table created successfully...");
 
+			StringBuilder stringBuilding = new StringBuilder();
+			
 			// insert data values into table
-			st.executeUpdate("INSERT INTO Accounts (Account_Number, Pin, Account_Balance, Account_Type) " + "VALUES ("
-					+ acctNo + "," + pin + "," + "\'" + balance + "\'" + "," + "\'" + acctType + "\'" + ")");
+			st.executeUpdate(stringBuilding.append("INSERT INTO Accounts (Account_Number, Pin, Account_Balance, Account_Type) ")
+				.append("VALUES (").append(acctNo).append(",").append(pin).append(",").append("\'")
+				.append(balance).append("\'").append(",").append("\'")
+				.append(acctType).append("\'") + ")");
 			System.out.println("Records added to database ");
 
 		} catch (SQLException ex) {
@@ -72,7 +76,8 @@ public class DBConnector {
 			st = con.createStatement();
 			System.out.println("Updating record...");
 			st.executeUpdate(
-					"UPDATE Accounts SET Account_Balance= " + "\'" + bal + "\'" + " WHERE Account_Number=" + acctNo);
+					"UPDATE Accounts SET Account_Balance= " + "\'" + bal
+					+ "\'" + " WHERE Account_Number=" + acctNo);
 			System.out.println("Record updated successfully...");
 
 		} catch (SQLException ex) {

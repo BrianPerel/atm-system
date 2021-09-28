@@ -5,3 +5,5 @@ Launch4j/
 docs/
 *.dat
 *.log
+*.zip
+/log/

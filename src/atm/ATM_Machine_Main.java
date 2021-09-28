@@ -20,8 +20,8 @@ package atm;
  *
  *
  * GUI design: window 1 = enter acctNo, window 2 = enter pin, window 3 = enter acctType (savings or checkings)
- *			window 4 = show ATM user menu options
- *				sub windows = 1 appears for each option entered
+ * window 4 = show ATM user menu options
+ * sub windows = 1 appears for each option entered
  *
  */
 
@@ -63,7 +63,7 @@ public class ATM_Machine_Main extends JFrame {
 	static final String HEADER_TITLE = "ATM - City Central Bank";
 	static DecimalFormat df = new DecimalFormat("$###,###.00");
 	static Scanner input = new Scanner(System.in);
-	static Random r = new Random();
+	static Random randomGenerator = new Random();
 
 	public static void main(String[] args) throws IOException, SQLException {
 
@@ -80,8 +80,10 @@ public class ATM_Machine_Main extends JFrame {
 		// format date and time for display
 		DateTimeFormatter tf = DateTimeFormatter.ofPattern("YYYY-MM-d-");
 		java.time.LocalDateTime now = java.time.LocalDateTime.now();
-				
-		receiptFile = new File("Receipt." + now.format(tf) + "id" + r.nextInt(99) + ".log");
+		
+		StringBuilder receiptFileName = new StringBuilder();
+		
+		receiptFile = new File(receiptFileName.append("Receipt.").append(now.format(tf)).append("id").append(randomGenerator.nextInt(99)) + ".log");
 		final PrintWriter file = new PrintWriter(receiptFile);
 
 		int attempts = 0;
@@ -199,7 +201,6 @@ public class ATM_Machine_Main extends JFrame {
 
 		} while (!savingsCheckingsOption.matches("[a-zA-Z]+") || (!(savingsCheckingsOption.equals("S"))
 			&& !(savingsCheckingsOption.equals("C")) && !(savingsCheckingsOption.equals("Savings") && !(savingsCheckingsOption.equals("Checkings")))));
-
 		
 		if (savingsCheckingsOption.equals("C") || savingsCheckingsOption.equals("Checkings")) {
 			savingsCheckingsOption = "Checkings";
@@ -228,7 +229,6 @@ public class ATM_Machine_Main extends JFrame {
 
 		// create connection ptr to database
 		DBConnector connect = new DBConnector(); // connect class to DB class to perform db operations
-
 		connect.addData(Integer.parseInt(acctNo), Integer.parseInt(pin), df.format(account.getBalance()), savCheck); // add data to db
 
 		do {
@@ -377,12 +377,13 @@ public class ATM_Machine_Main extends JFrame {
 																	// variable (object)
 																	// after reading = deserialize
 	
+							StringBuilder composedMessage = new StringBuilder();
+							
 							// print out the saved data from binary file
 							JOptionPane.showMessageDialog(null,
-									"\nAccount Number: " + account1.getAcctNo() + "\nAccount Pin: " + account1.getPIN()
-											+ "\nAccount Balance: " + df.format(account1.getBalance()) + "\nAccount type: "
-											+ account1.getType(),
-									"Deserialize", JOptionPane.QUESTION_MESSAGE);
+								composedMessage.append("\nAccount Number: ").append(account1.getAcctNo()).append("\nAccount Pin: ")
+									.append(account1.getPIN()).append("\nAccount Balance: ").append(df.format(account1.getBalance()))
+									.append("\nAccount type: ").append(account1.getType()), "Deserialize", JOptionPane.QUESTION_MESSAGE);
 							
 							in.close();
 						} catch (IOException ex) {
@@ -402,9 +403,7 @@ public class ATM_Machine_Main extends JFrame {
 	
 						file.close();
 						
-						in = in.substring(0, 1).toUpperCase() + in.substring(1);
-						
-						if (in.equals("No") || in.equals("N") || in.equals("Cancel")) {
+						if (in.equalsIgnoreCase("No") || in.equalsIgnoreCase("N") || in.equalsIgnoreCase("Cancel")) {
 							fileMain.delete();
 							JOptionPane.showMessageDialog(null, "\nHave a nice day!", GOODBYE,
 									JOptionPane.QUESTION_MESSAGE);
