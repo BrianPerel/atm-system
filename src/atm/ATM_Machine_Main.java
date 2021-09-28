@@ -80,10 +80,8 @@ public class ATM_Machine_Main extends JFrame {
 		// format date and time for display
 		DateTimeFormatter tf = DateTimeFormatter.ofPattern("YYYY-MM-d-");
 		java.time.LocalDateTime now = java.time.LocalDateTime.now();
-		
-		String id = "id" + r.nextInt(99);
-		
-		receiptFile = new File("Receipt." + now.format(tf) + id + ".log");
+				
+		receiptFile = new File("Receipt." + now.format(tf) + "id" + r.nextInt(99) + ".log");
 		final PrintWriter file = new PrintWriter(receiptFile);
 
 		int attempts = 0;
@@ -149,10 +147,10 @@ public class ATM_Machine_Main extends JFrame {
 			int option = JOptionPane.showOptionDialog(null, panel, HEADER_TITLE, JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, options, null);
 
-			if (option == 0) { // pressing OK button
+			if (option == 0) { // if you press OK button
 				char[] password = pass.getPassword();
 				pin = new String(password);
-			} else {
+			} else { // if you press cancel button
 				file.close();
 				receiptFile.delete();
 				System.exit(0);
@@ -174,12 +172,12 @@ public class ATM_Machine_Main extends JFrame {
 					savCheck0 = JOptionPane.showInputDialog(null, "Savings (s) or Checkings (c): ",
 							HEADER_TITLE, JOptionPane.QUESTION_MESSAGE);
 
-					if (savCheck0.equals("")) {
+					if (savCheck0.isEmpty()) {
 						JOptionPane.showMessageDialog(null, "Invalid Response!", WARNING,
 								JOptionPane.WARNING_MESSAGE);
 					}
 
-				} while (savCheck0.equals(""));
+				} while (savCheck0.isEmpty());
 
 			} catch (NullPointerException e) {
 				file.close();
@@ -187,8 +185,13 @@ public class ATM_Machine_Main extends JFrame {
 				System.exit(0);
 			}
 
-			savCheck0 = savCheck0.trim();
-			savingsCheckingsOption = Character.toUpperCase(savCheck0.charAt(0)) + savCheck0.substring(1);
+			savingsCheckingsOption = Character.toUpperCase(savCheck0.trim().charAt(0)) + savCheck0.trim().substring(1);
+			
+			// for some reason when user enters 'checkings' for acct type invalid type flag is raised
+			// this is a current work around for that problem
+			if(savingsCheckingsOption.equals("Checkings")) {
+				savingsCheckingsOption = "C";
+			}
 
 			if (!(savingsCheckingsOption.equals("S")) && !(savingsCheckingsOption.equals("C")) && !(savingsCheckingsOption.equals("Savings") && !(savingsCheckingsOption.equals("Checkings")))) {
 				JOptionPane.showMessageDialog(null, "Invalid option!", WARNING, JOptionPane.WARNING_MESSAGE);
@@ -197,23 +200,22 @@ public class ATM_Machine_Main extends JFrame {
 		} while (!savingsCheckingsOption.matches("[a-zA-Z]+") || (!(savingsCheckingsOption.equals("S"))
 			&& !(savingsCheckingsOption.equals("C")) && !(savingsCheckingsOption.equals("Savings") && !(savingsCheckingsOption.equals("Checkings")))));
 
-		String savCheck2 = "";
 		
 		if (savingsCheckingsOption.equals("C") || savingsCheckingsOption.equals("Checkings")) {
-			savCheck2 = "Checkings";
+			savingsCheckingsOption = "Checkings";
 		}
 
 		else if (savingsCheckingsOption.equals("S") || savingsCheckingsOption.equals("Savings")) {
-			savCheck2 = "Savings";
+			savingsCheckingsOption = "Savings";
 		}
 
 		// create account
-		Account account = new Account(acctNo, pin, ((Math.random() % 23) * 100000), savCheck2);
+		Account account = new Account(acctNo, pin, ((Math.random() % 23) * 100000), savingsCheckingsOption);
 
 		String select = "0";
 
 		// load to menu
-		menu(account, file, select, savCheck2, receiptFile);
+		menu(account, file, select, savingsCheckingsOption, receiptFile);
 	}
 
 	public static void menu(Account account, PrintWriter file, String select, String savCheck, File fileMain)
@@ -227,8 +229,7 @@ public class ATM_Machine_Main extends JFrame {
 		// create connection ptr to database
 		DBConnector connect = new DBConnector(); // connect class to DB class to perform db operations
 
-		String acctBalance = df.format(account.getBalance()); // get balance and format it
-		connect.addData(Integer.parseInt(acctNo), Integer.parseInt(pin), acctBalance, savCheck); // add data to db
+		connect.addData(Integer.parseInt(acctNo), Integer.parseInt(pin), df.format(account.getBalance()), savCheck); // add data to db
 
 		do {
 			try {
@@ -291,7 +292,7 @@ public class ATM_Machine_Main extends JFrame {
 																							// localhost site
 	
 						account = null; // set account to value of null (clearing all attribute values)
-						JOptionPane.showMessageDialog(null, "\nAccount has been terminated\n", "Account Termination",
+						JOptionPane.showMessageDialog(null, "\n\nAccount has been terminated\n", "Account Termination",
 								JOptionPane.INFORMATION_MESSAGE);
 	
 						file.println("\nAccount has been terminated");
@@ -394,7 +395,7 @@ public class ATM_Machine_Main extends JFrame {
 	
 					// exit program
 					case "8": {
-						file.print("\n\nHave a nice day!");
+						file.print("\n\n\nHave a nice day!");
 						p0.destroy(); // close xampp app
 						String in = JOptionPane.showInputDialog(null, "\nWould you like a receipt? ", "Receipt?",
 								JOptionPane.QUESTION_MESSAGE);
@@ -408,13 +409,12 @@ public class ATM_Machine_Main extends JFrame {
 							JOptionPane.showMessageDialog(null, "\nHave a nice day!", GOODBYE,
 									JOptionPane.QUESTION_MESSAGE);
 						} else {
-							JOptionPane.showMessageDialog(null, "Receipt saved as txt file: " + fileMain.getName(),
+							JOptionPane.showMessageDialog(null, "Receipt saved as: " + fileMain.getName(),
 									"Receipt", JOptionPane.INFORMATION_MESSAGE);
 							Runtime rt = Runtime.getRuntime();
-							String file1 = "Receipt.txt";
 							JOptionPane.showMessageDialog(null, "\nHave a nice day!", GOODBYE,
 									JOptionPane.QUESTION_MESSAGE);
-							rt.exec("notepad " + file1); // open notepad program with pre-selected file
+							rt.exec("notepad " + receiptFile); // open notepad program with pre-selected file
 						}
 	
 						System.exit(0);

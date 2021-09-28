@@ -38,7 +38,7 @@ class DepositFunds extends ATM {
 		} while (!money0.matches("[0-9.]+"));
 
 		double money = Double.parseDouble(money0);
-		file.println("\n\tDeposit amount: $" + money);
+		file.println("\nDeposit amount: $" + money);
 
 		// account amount cannot supersede or excede this amount (1-1000000000)
 		if (money >= 1 && money < 1000000000) {

@@ -18,6 +18,7 @@
 
 	<target name="clean" description="cleans all build generated folders">
 		<delete dir="build" />
+		<delete dir="log" />
 	</target>
 
 	<target name="compile" description="compile's src files">

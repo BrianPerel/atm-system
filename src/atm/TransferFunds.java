@@ -48,9 +48,9 @@ class TransferFunds extends ATM {
 		// valid amount range
 		if (money > 0 && money < this.account.getBalance()) {
 			this.account.setBalance(this.account.getBalance() - money);
-			file.print("\nTransferring...");
+			file.print("\n\nTransferring...");
 			JOptionPane.showMessageDialog(null,
-					"\nTransfer complete!\nYour New Balance for Account 1 (" + account.getAcctNo() + ") is: "
+					"\nTransfer complete!\n\nYour New Balance for Account 1 (" + account.getAcctNo() + ") is: "
 							+ df.format(this.account.getBalance()) + "\nYour New Balance for Account 2 ("
 							+ this.account2.getAcctNo() + ") is: " + df.format(this.account2.getBalance()),
 					"ATM - City Central Bank", JOptionPane.QUESTION_MESSAGE);

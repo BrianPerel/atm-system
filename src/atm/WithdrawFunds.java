@@ -44,11 +44,11 @@ class WithdrawFunds extends ATM {
 		// valid range
 		if (money > 0 && money < account.getBalance()) {
 			this.account.setBalance(this.account.getBalance() - money);
-			file.print("\nWithdrawing...");
+			file.print("\n\nWithdrawing...");
 			JOptionPane.showMessageDialog(null,
 					"Withdraw Complete! Your New Balance is: " + df.format(account.getBalance()), "Withdraw",
 					JOptionPane.QUESTION_MESSAGE);
-			file.printf("Withdraw complete! Your New Balance is: $%,.2f\n", account.getBalance());
+			file.printf("%nWithdraw complete! Your New Balance is: $%,.2f%n", account.getBalance());
 
 			// update db record in table (since withdraw op performed on account)
 			try {
