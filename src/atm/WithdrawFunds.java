@@ -3,9 +3,9 @@ package atm;
 import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.io.IOException;
 import java.util.InputMismatchException;
-import java.sql.*;
 
 /**
  * Inherit ATM program for primary methods / operations Performs withdraw
@@ -44,7 +44,7 @@ class WithdrawFunds extends ATM {
 		// valid range
 		if (money > 0 && money < account.getBalance()) {
 			this.account.setBalance(this.account.getBalance() - money);
-			file.print("\n\n\nWithdrawing...");
+			file.print("\n\n\n Withdrawing...");
 			JOptionPane.showMessageDialog(null,
 					"Withdraw Complete! Your New Balance is: " + df.format(account.getBalance()), "Withdraw",
 					JOptionPane.QUESTION_MESSAGE);

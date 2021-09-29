@@ -41,7 +41,7 @@ public class DBConnector {
 			System.out.println(ex);
 		} catch (Exception e) {
 			System.out.println(e);
-		} 
+		}
 	}
 
 	public void addData(int acctNo, int pin, String balance, String acctType) throws SQLException {
@@ -55,19 +55,19 @@ public class DBConnector {
 			System.out.println("Table created successfully...");
 
 			StringBuilder stringBuilding = new StringBuilder();
-			
+
 			// insert data values into table
-			st.executeUpdate(stringBuilding.append("INSERT INTO Accounts (Account_Number, Pin, Account_Balance, Account_Type) ")
-				.append("VALUES (").append(acctNo).append(",").append(pin).append(",").append("\'")
-				.append(balance).append("\'").append(",").append("\'")
-				.append(acctType).append("\'") + ")");
+			st.executeUpdate(
+					stringBuilding.append("INSERT INTO Accounts (Account_Number, Pin, Account_Balance, Account_Type) ")
+							.append("VALUES (").append(acctNo).append(",").append(pin).append(",").append("\'")
+							.append(balance).append("\'").append(",").append("\'").append(acctType).append("\'") + ")");
 			System.out.println("Records added to database ");
 
 		} catch (SQLException ex) {
 			System.out.println(ex);
 		} catch (Exception e) {
 			System.out.println(e);
-		} 
+		}
 	}
 
 	public void updateData(String bal, int acctNo) throws SQLException {
@@ -76,15 +76,14 @@ public class DBConnector {
 			st = con.createStatement();
 			System.out.println("Updating record...");
 			st.executeUpdate(
-					"UPDATE Accounts SET Account_Balance= " + "\'" + bal
-					+ "\'" + " WHERE Account_Number=" + acctNo);
+					"UPDATE Accounts SET Account_Balance= " + "\'" + bal + "\'" + " WHERE Account_Number=" + acctNo);
 			System.out.println("Record updated successfully...");
 
 		} catch (SQLException ex) {
 			System.out.println(ex);
 		} catch (Exception e) {
 			System.out.println(e);
-		} 
+		}
 	}
 
 	public void terminateAccount(int acctNo) throws SQLException {

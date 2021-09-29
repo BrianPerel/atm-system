@@ -1,19 +1,15 @@
 package atm;
 
 /**
- * Class to setup Account object, use Serializable interface to use serialize
- * operations Attributes: account type, number, pin, balance
+ * Class to setup Account object, operations Attributes: account type, number, pin, balance
  */
-class Account implements java.io.Serializable {
+class Account {
 
-	
-	// generated serializable ID value
-	private static final long serialVersionUID = 7843771383668803493L;
-	private int number;
+	private int hashCodeNumber;
 	private String acctNo;
-	private String pin;
-	private double balance;
+	private String acctPin;
 	private String acctType;
+	private double acctBalance;
 
 	public Account() {
 		this(null, null, 0.00, null);
@@ -21,23 +17,23 @@ class Account implements java.io.Serializable {
 
 	public Account(String acctNo, String pin) {
 		this.acctNo = acctNo;
-		this.pin = pin;
+		this.acctPin = pin;
 	}
 
 	public Account(String acctNo, String pin, double balance, String acctType) throws IllegalArgumentException {
 		this.acctNo = acctNo;
-		this.pin = pin;
+		this.acctPin = pin;
 		this.acctType = acctType;
 
 		if (balance < 0) {
 			throw new IllegalArgumentException("Value less than 0!");
 		}
 
-		this.balance = balance;
+		this.acctBalance = balance;
 	}
 
 	public void setNumber(int number) {
-		this.number = number;
+		this.hashCodeNumber = number;
 	}
 
 	public void setAcctNo(String acctNo) {
@@ -45,11 +41,11 @@ class Account implements java.io.Serializable {
 	}
 
 	public void setPIN(String pin) {
-		this.pin = pin;
+		this.acctPin = pin;
 	}
 
 	public void setBalance(double balance) throws IllegalArgumentException {
-		this.balance = balance;
+		this.acctBalance = balance;
 
 		if (balance < 0) {
 			throw new IllegalArgumentException("Value less than 0!");
@@ -61,7 +57,7 @@ class Account implements java.io.Serializable {
 	}
 
 	public int getNumber() {
-		return this.number;
+		return this.hashCodeNumber;
 	}
 
 	public String getAcctNo() {
@@ -69,11 +65,11 @@ class Account implements java.io.Serializable {
 	}
 
 	public String getPIN() {
-		return this.pin;
+		return this.acctPin;
 	}
 
 	public double getBalance() {
-		return this.balance;
+		return this.acctBalance;
 	}
 
 	public String getType() {
@@ -82,9 +78,8 @@ class Account implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return String.format(
-				"\tAccount number: %s%n\tPIN number: %s%n\tAccount balance: $%,.2f%n\tAccount type: %s%n",
-				this.acctNo, this.pin, this.balance, this.acctType);
+		return String.format("\tAccount number: %s%n\tPIN number: %s%n\tAccount balance: $%,.2f%n\tAccount type: %s%n",
+				this.acctNo, this.acctPin, this.acctBalance, this.acctType);
 	}
 
 	@Override
@@ -94,6 +89,6 @@ class Account implements java.io.Serializable {
 
 	@Override
 	public int hashCode() {
-		return number * 12;
+		return hashCodeNumber * 12;
 	}
 }

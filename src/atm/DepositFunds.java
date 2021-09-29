@@ -2,10 +2,10 @@ package atm;
 
 import java.text.DecimalFormat;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 import java.util.InputMismatchException;
-import java.sql.*;
 
 /**
  * Inherit ATM program for primary methods / operations Performs deposit ATM
@@ -34,7 +34,7 @@ class DepositFunds extends ATM {
 			if (!money0.matches("[0-9.]+")) {
 				JOptionPane.showMessageDialog(null, "Invalid amount!", "Warning", JOptionPane.WARNING_MESSAGE);
 			}
-				
+
 		} while (!money0.matches("[0-9.]+"));
 
 		double money = Double.parseDouble(money0);
