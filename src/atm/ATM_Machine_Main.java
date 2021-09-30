@@ -99,7 +99,7 @@ public class ATM_Machine_Main extends JFrame {
 				acctNo = JOptionPane.showInputDialog(null, "Today is: " + now.format(dateTimeFormat) + "\nAccount Number: ",
 						HEADER_TITLE, JOptionPane.QUESTION_MESSAGE);
 
-				if (acctNo.equals("cancel")) {
+				if (acctNo.equalsIgnoreCase("cancel")) {
 					JOptionPane.showMessageDialog(null, "Have a nice day!", GOODBYE, JOptionPane.QUESTION_MESSAGE);
 					closeApp();
 				}
@@ -188,11 +188,11 @@ public class ATM_Machine_Main extends JFrame {
 				&& !(savingsCheckingsOption.equals("C"))
 				&& !(savingsCheckingsOption.equals("Savings") && !(savingsCheckingsOption.equals("Checkings")))));
 
-		if (savingsCheckingsOption.equals("C") || savingsCheckingsOption.equals("Checkings")) {
+		if (savingsCheckingsOption.equalsIgnoreCase("c") || savingsCheckingsOption.equalsIgnoreCase("checkings")) {
 			savingsCheckingsOption = "Checkings";
 		}
 
-		else if (savingsCheckingsOption.equals("S") || savingsCheckingsOption.equals("Savings")) {
+		else if (savingsCheckingsOption.equalsIgnoreCase("s") || savingsCheckingsOption.equalsIgnoreCase("savings")) {
 			savingsCheckingsOption = "Savings";
 		}
 
@@ -234,10 +234,12 @@ public class ATM_Machine_Main extends JFrame {
 							JOptionPane.showMessageDialog(null, account, "Balance Inquiry",
 									JOptionPane.INFORMATION_MESSAGE);
 							file.print("\nBalance inquiry...\n" + account);
-						} else if (account == null) {
-							JOptionPane.showMessageDialog(null, "Account is empty", WARNING, JOptionPane.WARNING_MESSAGE);
-							file.print("Balance inquiry...\n\tAccount doesn't exist");
+							break;
 						}
+						
+						JOptionPane.showMessageDialog(null, "Account is empty", WARNING, JOptionPane.WARNING_MESSAGE);
+						file.print("Balance inquiry...\n\tAccount doesn't exist");
+							
 						break;
 					}
 	
@@ -248,6 +250,7 @@ public class ATM_Machine_Main extends JFrame {
 									JOptionPane.WARNING_MESSAGE);
 							continue;
 						}
+						
 						ATM w1 = new WithdrawFunds(account);
 						w1.withdraw(file);
 						break;
@@ -391,16 +394,16 @@ public class ATM_Machine_Main extends JFrame {
 							receiptFile.delete();
 							JOptionPane.showMessageDialog(null, "\nHave a nice day!", GOODBYE,
 									JOptionPane.QUESTION_MESSAGE);
-						} else {
-							JOptionPane.showMessageDialog(null, "Receipt saved as: " + receiptFile.getName(), "Receipt",
-									JOptionPane.INFORMATION_MESSAGE);
-							JOptionPane.showMessageDialog(null, "\nHave a nice day!", GOODBYE,
-									JOptionPane.QUESTION_MESSAGE);
-							Runtime.getRuntime().exec("notepad " + receiptFile); // open notepad program with pre-selected file
-						}
-	
+							System.exit(0);
+						} 
+						
+						JOptionPane.showMessageDialog(null, "Receipt saved as: " + receiptFile.getName(), "Receipt",
+								JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "\nHave a nice day!", GOODBYE,
+								JOptionPane.QUESTION_MESSAGE);
+						Runtime.getRuntime().exec("notepad " + receiptFile); // open notepad program with pre-selected file
+					
 						System.exit(0);
-						break;
 					}
 	
 					default: {

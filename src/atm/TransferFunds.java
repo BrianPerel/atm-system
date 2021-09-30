@@ -49,9 +49,11 @@ class TransferFunds extends ATM {
 			this.account.setBalance(this.account.getBalance() - money);
 			file.print("\n\n Transferring...");
 			JOptionPane.showMessageDialog(null,
-					"\nTransfer complete!\n\nYour New Balance for Account 1 (" + account.getAcctNo() + ") is: "
-							+ formatter.format(this.account.getBalance()) + "\nYour New Balance for Account 2 ("
-							+ this.account2.getAcctNo() + ") is: " + formatter.format(this.account2.getBalance()),
+					new StringBuilder("\nTransfer complete!\n\nYour New Balance for Account 1 (")
+						.append(account.getAcctNo()).append(") is: ")
+						.append(formatter.format(this.account.getBalance())).append("\nYour New Balance for Account 2 (")
+						.append(this.account2.getAcctNo()).append(") is: ")
+						.append(formatter.format(this.account2.getBalance())),
 					"ATM - City Central Bank", JOptionPane.QUESTION_MESSAGE);
 
 			file.printf("Transfer complete! Your New Balance for Account " + account.getAcctNo() + " is: "
