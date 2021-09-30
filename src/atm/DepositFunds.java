@@ -13,7 +13,7 @@ import java.util.InputMismatchException;
  * op
  */
 class DepositFunds extends ATM {
-	static DecimalFormat df = new DecimalFormat("$###,###.00"); // for decimal rounding (to 2 places, plus $ and comma
+	static DecimalFormat formatter = new DecimalFormat("$###,###.00"); // for decimal rounding (to 2 places, plus $ and comma
 																// insertion)
 	private final Account account;
 
@@ -45,15 +45,14 @@ class DepositFunds extends ATM {
 			account.setBalance(account.getBalance() + money);
 			file.print("\nDepositing...");
 			JOptionPane.showMessageDialog(null,
-					"Deposit Complete! Your New Balance is: " + df.format(this.account.getBalance()));
+					"Deposit Complete! Your New Balance is: " + formatter.format(this.account.getBalance()));
 			file.printf("Deposit Complete! Your New Balance is: $%,.2f%n", this.account.getBalance());
 
 			// update db record in table (since withdraw op performed on account)
 			try {
 				// create connection ptr to database
-				DBConnector connect = new DBConnector(); // connect class to DB class to perform db operations
-				String bal = df.format(account.getBalance()); // get balance and format it
-				connect.updateData(bal, Integer.parseInt(account.getAcctNo())); // add data to db
+				// connect class to DB class to perform db operations
+				new DBConnector().updateData(formatter.format(account.getBalance()), Integer.parseInt(account.getAcctNo())); 
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}

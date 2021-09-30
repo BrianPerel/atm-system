@@ -17,7 +17,7 @@ class TransferFunds extends ATM {
 
 	private final Account account; // first account, transfer funds from
 	private final Account account2; // second account, transfer funds to
-	static DecimalFormat df = new DecimalFormat("$###,###.00"); // formatting to make values include a '$', commas, and
+	static DecimalFormat formatter = new DecimalFormat("$###,###.00"); // formatting to make values include a '$', commas, and
 																// rounding to 2 places
 
 	public TransferFunds(Account account, Account account2) {
@@ -31,8 +31,7 @@ class TransferFunds extends ATM {
 
 		String money0;
 
-		// amount entered must be of numeric format, re-prompt every time format is
-		// incorrect
+		// amount entered must be of numeric format, re-prompt every time format is incorrect
 		do {
 			money0 = JOptionPane.showInputDialog(null, "\nTransfer amount: $", "ATM", JOptionPane.QUESTION_MESSAGE);
 
@@ -51,19 +50,19 @@ class TransferFunds extends ATM {
 			file.print("\n\n Transferring...");
 			JOptionPane.showMessageDialog(null,
 					"\nTransfer complete!\n\nYour New Balance for Account 1 (" + account.getAcctNo() + ") is: "
-							+ df.format(this.account.getBalance()) + "\nYour New Balance for Account 2 ("
-							+ this.account2.getAcctNo() + ") is: " + df.format(this.account2.getBalance()),
+							+ formatter.format(this.account.getBalance()) + "\nYour New Balance for Account 2 ("
+							+ this.account2.getAcctNo() + ") is: " + formatter.format(this.account2.getBalance()),
 					"ATM - City Central Bank", JOptionPane.QUESTION_MESSAGE);
 
 			file.printf("Transfer complete! Your New Balance for Account " + account.getAcctNo() + " is: "
-					+ df.format(this.account.getBalance()) + "\nYour New Balance for Account "
-					+ this.account2.getAcctNo() + " is: " + df.format(this.account2.getBalance()));
+					+ formatter.format(this.account.getBalance()) + "\nYour New Balance for Account "
+					+ this.account2.getAcctNo() + " is: " + formatter.format(this.account2.getBalance()));
 
 			// update db record in table (since withdraw op performed on account)
 			try {
 				// create connection ptr to database
-				DBConnector connect = new DBConnector(); // connect class to DB class to perform db operations
-				connect.updateData(df.format(account.getBalance()), Integer.parseInt(account.getAcctNo())); // add data to db
+				// connect class to DB class to perform db operations and add data to db
+				new DBConnector().updateData(formatter.format(account.getBalance()), Integer.parseInt(account.getAcctNo())); 
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
@@ -95,14 +94,7 @@ class TransferFunds extends ATM {
 			JOptionPane.showMessageDialog(null, "\tError: You don't have sufficient funds!", "Warning",
 					JOptionPane.WARNING_MESSAGE);
 
-			if (money == 0) {
-				JOptionPane.showMessageDialog(null, "\nTransfer operation cancelled...", "Cancelled",
-						JOptionPane.WARNING_MESSAGE);
-
-				file.println("Transfer operation cancelled...");
-			} else {
-				transferFunds(acctNo2, file);
-			}
+			transferFunds(acctNo2, file);
 		}
 	}
 

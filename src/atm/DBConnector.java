@@ -7,12 +7,10 @@ package atm;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class DBConnector {
 
 	private Connection con;
-	private Statement st;
 
 	public DBConnector() throws SQLException { // constructor -> establishes connection and creates DB (NOTE: make sure
 												// to launch apache and mysql)
@@ -29,9 +27,8 @@ public class DBConnector {
 
 			// create database
 			System.out.println("Creating database...");
-			st = con.createStatement(); // execute a query
-			String sql = "CREATE DATABASE IF NOT EXISTS atm_database";
-			st.executeUpdate(sql);
+			// execute a query
+			con.createStatement().executeUpdate("CREATE DATABASE IF NOT EXISTS atm_database");
 			System.out.println("Database created successfully...");
 			con = DriverManager.getConnection("jdbc:mysql://localhost/atm_database", "root", ""); // select db after
 																									// creating it, if
@@ -48,17 +45,14 @@ public class DBConnector {
 
 		try {
 			// create table
-			st = con.createStatement();
 			System.out.println("Creating table...");
-			st.executeUpdate("CREATE TABLE IF NOT EXISTS Accounts "
+			con.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS Accounts "
 					+ "(Account_Number INT PRIMARY KEY, Pin INT, Account_Balance VARCHAR(30), Account_Type VARCHAR(30))");
 			System.out.println("Table created successfully...");
 
-			StringBuilder stringBuilding = new StringBuilder();
-
 			// insert data values into table
-			st.executeUpdate(
-					stringBuilding.append("INSERT INTO Accounts (Account_Number, Pin, Account_Balance, Account_Type) ")
+			con.createStatement().executeUpdate(
+					new StringBuilder().append("INSERT INTO Accounts (Account_Number, Pin, Account_Balance, Account_Type) ")
 							.append("VALUES (").append(acctNo).append(",").append(pin).append(",").append("\'")
 							.append(balance).append("\'").append(",").append("\'").append(acctType).append("\'") + ")");
 			System.out.println("Records added to database ");
@@ -73,9 +67,8 @@ public class DBConnector {
 	public void updateData(String bal, int acctNo) throws SQLException {
 		try {
 			// update record in db
-			st = con.createStatement();
 			System.out.println("Updating record...");
-			st.executeUpdate(
+			con.createStatement().executeUpdate(
 					"UPDATE Accounts SET Account_Balance= " + "\'" + bal + "\'" + " WHERE Account_Number=" + acctNo);
 			System.out.println("Record updated successfully...");
 
@@ -89,8 +82,7 @@ public class DBConnector {
 	public void terminateAccount(int acctNo) throws SQLException {
 		// delete record from table 'Accounts'
 		try {
-			st = con.createStatement();
-			st.executeUpdate("DELETE FROM Accounts WHERE Account_Number= " + acctNo);
+			con.createStatement().executeUpdate("DELETE FROM Accounts WHERE Account_Number= " + acctNo);
 			System.out.println("Account deleted successfully...");
 		} catch (SQLException ex) {
 			System.out.println(ex);
@@ -102,8 +94,7 @@ public class DBConnector {
 	public void deleteDB() {
 		// delete entire database
 		try {
-			String sql1 = "DROP DATABASE atm_database";
-			st.executeUpdate(sql1);
+			con.createStatement().executeUpdate("DROP DATABASE atm_database");
 			System.out.println("Database deleted successfully...");
 		} catch (Exception e) {
 			System.out.println("Exception: " + e);

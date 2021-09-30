@@ -15,7 +15,7 @@ import java.util.InputMismatchException;
 class WithdrawFunds extends ATM {
 
 	private final Account account;
-	static DecimalFormat df = new DecimalFormat("$###,###.00");
+	static DecimalFormat formatter = new DecimalFormat("$###,###.00");
 
 	public WithdrawFunds(Account account) {
 		super(account);
@@ -46,16 +46,15 @@ class WithdrawFunds extends ATM {
 			this.account.setBalance(this.account.getBalance() - money);
 			file.print("\n\n\n Withdrawing...");
 			JOptionPane.showMessageDialog(null,
-					"Withdraw Complete! Your New Balance is: " + df.format(account.getBalance()), "Withdraw",
+					"Withdraw Complete! Your New Balance is: " + formatter.format(account.getBalance()), "Withdraw",
 					JOptionPane.QUESTION_MESSAGE);
 			file.printf("%nWithdraw complete! Your New Balance is: $%,.2f%n", account.getBalance());
 
 			// update db record in table (since withdraw op performed on account)
 			try {
 				// create connection ptr to database
-				DBConnector connect = new DBConnector(); // connect class to DB class to perform db operations
-				String bal = df.format(account.getBalance()); // get balance and format it
-				connect.updateData(bal, Integer.parseInt(account.getAcctNo())); // add data to db
+				// connect class to DB class to perform db operations and add data to db
+				new DBConnector().updateData(formatter.format(account.getBalance()), Integer.parseInt(account.getAcctNo())); 
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
@@ -83,12 +82,7 @@ class WithdrawFunds extends ATM {
 			JOptionPane.showMessageDialog(null, "\tError: You don't have sufficient funds!", "Warning",
 					JOptionPane.QUESTION_MESSAGE);
 
-			if (money == 0) {
-				JOptionPane.showMessageDialog(null, "\nWithdraw operation cancelled...");
-				file.printf("Withdraw operation cancelled...");
-			} else {
-				withdraw(file);
-			}
+			withdraw(file);
 		}
 	}
 
