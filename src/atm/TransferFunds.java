@@ -29,19 +29,19 @@ class TransferFunds extends ATM {
 	@Override
 	public void transferFunds(String acctNo2, PrintWriter file) throws IOException {
 
-		String money0;
+		String transferAmt;
 
 		// amount entered must be of numeric format, re-prompt every time format is incorrect
 		do {
-			money0 = JOptionPane.showInputDialog(null, "\nTransfer amount: $", "ATM", JOptionPane.QUESTION_MESSAGE);
+			transferAmt = JOptionPane.showInputDialog(null, "\nTransfer amount: $", "ATM", JOptionPane.QUESTION_MESSAGE);
 
-			if (!money0.matches("[0-9.]+")) {
+			if (!transferAmt.matches("[0-9.]+")) {
 				JOptionPane.showMessageDialog(null, "Invalid amount!", "Warning", JOptionPane.WARNING_MESSAGE);
 			}
 
-		} while (!money0.matches("[0-9.]+"));
+		} while (!transferAmt.matches("[0-9.]+"));
 
-		double money = Double.parseDouble(money0);
+		double money = Double.parseDouble(transferAmt);
 		file.print("\n\tTransfer amount: $" + money);
 
 		// valid amount range
@@ -70,11 +70,10 @@ class TransferFunds extends ATM {
 		} else if (money <= 0) {
 
 			try {
-				money0 = JOptionPane.showInputDialog(null, "Amount entered is too little!", "Warning",
+				transferAmt = JOptionPane.showInputDialog(null, "Amount entered is too little!", "Warning",
 						JOptionPane.QUESTION_MESSAGE);
-				money = Double.parseDouble(money0);
-
-				if (money == 0) {
+				
+				if (Double.parseDouble(transferAmt) == 0) {
 					JOptionPane.showMessageDialog(null, "\nTransfer operation cancelled...", "Cancelled",
 							JOptionPane.QUESTION_MESSAGE);
 					file.println("Transfer operation cancelled");

@@ -25,19 +25,19 @@ class DepositFunds extends ATM {
 	@Override
 	public void depositCash(PrintWriter file) {
 
-		String money0;
+		String depositAmt;
 
 		do {
-			money0 = JOptionPane.showInputDialog(null, "\n\nDeposit amount: $", "Deposit",
+			depositAmt = JOptionPane.showInputDialog(null, "\n\nDeposit amount: $", "Deposit",
 					JOptionPane.QUESTION_MESSAGE);
 
-			if (!money0.matches("[0-9.]+")) {
+			if (!depositAmt.matches("[0-9.]+")) {
 				JOptionPane.showMessageDialog(null, "Invalid amount!", "Warning", JOptionPane.WARNING_MESSAGE);
 			}
 
-		} while (!money0.matches("[0-9.]+"));
+		} while (!depositAmt.matches("[0-9.]+"));
 
-		double money = Double.parseDouble(money0);
+		double money = Double.parseDouble(depositAmt);
 		file.println("\nDeposit amount: $" + money);
 
 		// account amount cannot supersede or excede this amount (1-1000000000)

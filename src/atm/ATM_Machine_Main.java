@@ -80,7 +80,7 @@ public class ATM_Machine_Main extends JFrame {
 		java.time.LocalDateTime now = java.time.LocalDateTime.now();
 
 		receiptFile = new File(new StringBuilder().append("Receipt.").append(now.format(dateTimeFormat)).append("id")
-				.append(randomGenerator.nextInt(99)) + ".log");
+				.append(randomGenerator.nextInt(99)).append(".log").toString());
 		file = new PrintWriter(receiptFile);
 
 		int attempts = 0;
@@ -199,10 +199,8 @@ public class ATM_Machine_Main extends JFrame {
 		// create account
 		Account account = new Account(acctNo, pin, ((Math.random() % 23) * 100000), savingsCheckingsOption);
 
-		String select = "0";
-
 		// load to menu
-		menu(account, file, select, savingsCheckingsOption, receiptFile);
+		menu(account, file, "0", savingsCheckingsOption, receiptFile);
 	}
 
 	public static void menu(Account account, PrintWriter file, String select, String savCheck, File receiptFile)
@@ -319,13 +317,11 @@ public class ATM_Machine_Main extends JFrame {
 									JOptionPane.WARNING_MESSAGE);
 							continue;
 						}
-						String filename = "AccountData.dat"; // create binary file (.dat = data file) to save object state
-																// to
 	
 						// Serialization
 						try {
-							// Save object in a file
-							FileOutputStream file1 = new FileOutputStream(filename);
+							// Save object state to a binary file
+							FileOutputStream file1 = new FileOutputStream("AccountData.dat");
 							ObjectOutputStream out = new ObjectOutputStream(file1);
 	
 							// method for object serialization
@@ -351,15 +347,13 @@ public class ATM_Machine_Main extends JFrame {
 									JOptionPane.WARNING_MESSAGE);
 							continue;
 						}
-						
-						String filename = "AccountData.dat";
-	
+							
 						Account account1 = null; // create the empty object, request os to allocate chunk of memory to store
 													// contents from file
 	
 						// Deserialization process
 						try {
-							FileInputStream file2 = new FileInputStream(filename);
+							FileInputStream file2 = new FileInputStream("AccountData.dat");
 							ObjectInputStream in = new ObjectInputStream(file2);
 	
 							account1 = (Account) in.readObject(); // store the content from binary file to a reference
@@ -375,6 +369,7 @@ public class ATM_Machine_Main extends JFrame {
 									"Deserialize", JOptionPane.QUESTION_MESSAGE);
 	
 							in.close();
+							
 						} catch (IOException ex) {
 							System.out.println("Deserialization error!");
 						} catch (ClassNotFoundException ex) {
@@ -392,7 +387,7 @@ public class ATM_Machine_Main extends JFrame {
 						
 						file.close();
 	
-						if (in.equalsIgnoreCase("No") || in.equalsIgnoreCase("N") || in.equalsIgnoreCase("Cancel")) {
+						if (in.equalsIgnoreCase("no") || in.equalsIgnoreCase("n") || in.equalsIgnoreCase("cancel")) {
 							receiptFile.delete();
 							JOptionPane.showMessageDialog(null, "\nHave a nice day!", GOODBYE,
 									JOptionPane.QUESTION_MESSAGE);

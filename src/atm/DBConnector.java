@@ -53,8 +53,8 @@ public class DBConnector {
 			// insert data values into table
 			con.createStatement().executeUpdate(
 					new StringBuilder().append("INSERT INTO Accounts (Account_Number, Pin, Account_Balance, Account_Type) ")
-							.append("VALUES (").append(acctNo).append(",").append(pin).append(",").append("\'")
-							.append(balance).append("\'").append(",").append("\'").append(acctType).append("\'") + ")");
+						.append("VALUES (").append(acctNo).append(",").append(pin).append(",").append("\'")
+						.append(balance).append("\'").append(",").append("\'").append(acctType).append("\'").append(")").toString());
 			System.out.println("Records added to database ");
 
 		} catch (SQLException ex) {
