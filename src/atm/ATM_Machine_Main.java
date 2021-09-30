@@ -151,8 +151,6 @@ public class ATM_Machine_Main extends JFrame {
 
 		} while (pin.length() != 4 || !(pin.matches(ZERO_TO_NINE_REG_EXP)));
 
-		String savingsCheckingsOption;
-
 		do {
 			try {
 				do {
@@ -169,38 +167,34 @@ public class ATM_Machine_Main extends JFrame {
 				closeApp();
 			}
 
-			savingsCheckingsOption = Character.toUpperCase(acctTypeOption.trim().charAt(0)) +
-					acctTypeOption.trim().substring(1);
-
-			// for some reason when user enters 'checkings' for acct type invalid type flag
-			// is raised
+			// for some reason when user enters 'checkings' for acct type invalid type flag is raised
 			// this is a current work around for that problem
-			if (savingsCheckingsOption.equals("Checkings")) {
-				savingsCheckingsOption = "C";
+			if (acctTypeOption.equalsIgnoreCase("Checkings")) {
+				acctTypeOption = "C";
 			}
 
-			if (!(savingsCheckingsOption.equals("S")) && !(savingsCheckingsOption.equals("C"))
-					&& !(savingsCheckingsOption.equals("Savings") && !(savingsCheckingsOption.equals("Checkings")))) {
+			if (!(acctTypeOption.equalsIgnoreCase("S")) && !(acctTypeOption.equalsIgnoreCase("C"))
+					&& !(acctTypeOption.equalsIgnoreCase("Savings") && !(acctTypeOption.equalsIgnoreCase("Checkings")))) {
 				JOptionPane.showMessageDialog(null, "Invalid option!", WARNING, JOptionPane.WARNING_MESSAGE);
 			}
 
-		} while (!savingsCheckingsOption.matches("[a-zA-Z]+") || (!(savingsCheckingsOption.equals("S"))
-				&& !(savingsCheckingsOption.equals("C"))
-				&& !(savingsCheckingsOption.equals("Savings") && !(savingsCheckingsOption.equals("Checkings")))));
+		} while (!acctTypeOption.matches("[a-zA-Z]+") || (!(acctTypeOption.equalsIgnoreCase("S"))
+				&& !(acctTypeOption.equalsIgnoreCase("C"))
+				&& !(acctTypeOption.equalsIgnoreCase("Savings") && !(acctTypeOption.equalsIgnoreCase("Checkings")))));
 
-		if (savingsCheckingsOption.equalsIgnoreCase("c") || savingsCheckingsOption.equalsIgnoreCase("checkings")) {
-			savingsCheckingsOption = "Checkings";
+		if (acctTypeOption.equalsIgnoreCase("c") || acctTypeOption.equalsIgnoreCase("checkings")) {
+			acctTypeOption = "Checkings";
 		}
 
-		else if (savingsCheckingsOption.equalsIgnoreCase("s") || savingsCheckingsOption.equalsIgnoreCase("savings")) {
-			savingsCheckingsOption = "Savings";
+		else if (acctTypeOption.equalsIgnoreCase("s") || acctTypeOption.equalsIgnoreCase("savings")) {
+			acctTypeOption = "Savings";
 		}
 
 		// create account
-		Account account = new Account(acctNo, pin, ((Math.random() % 23) * 100000), savingsCheckingsOption);
+		Account account = new Account(acctNo, pin, ((Math.random() % 23) * 100000), acctTypeOption);
 
 		// load to menu
-		menu(account, file, "0", savingsCheckingsOption, receiptFile);
+		menu(account, file, "0", acctTypeOption, receiptFile);
 	}
 
 	public static void menu(Account account, PrintWriter file, String select, String savCheck, File receiptFile)
@@ -212,10 +206,8 @@ public class ATM_Machine_Main extends JFrame {
 
 		// create connection ptr to database
 		DBConnector connect = new DBConnector(); // connect class to DB class to perform db operations
-		connect.addData(Integer.parseInt(acctNo), Integer.parseInt(pin), formatter.format(account.getBalance()), savCheck); // add
-																														// data
-																														// to
-																														// db
+		connect.addData(Integer.parseInt(acctNo), Integer.parseInt(pin), 
+				formatter.format(account.getBalance()), savCheck); // add data to db
 
 		do {
 			try {
