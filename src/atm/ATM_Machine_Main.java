@@ -27,7 +27,7 @@ package atm;
 
 import java.util.Scanner;
 import java.util.InputMismatchException;
-import java.util.Random;
+import java.security.SecureRandom;
 import java.io.File;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -61,7 +61,7 @@ public class ATM_Machine_Main extends JFrame {
 	static final String HEADER_TITLE = "ATM - City Central Bank";
 	static DecimalFormat formatter = new DecimalFormat("$###,###.00");
 	static Scanner input = new Scanner(System.in);
-	static Random randomGenerator = new Random();
+	static SecureRandom randomGenerator = new SecureRandom();
 
 	public static void main(String[] args) throws IOException, SQLException {
 
