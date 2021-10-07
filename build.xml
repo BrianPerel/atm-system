@@ -42,7 +42,7 @@
 	<!-- create calculator.exe target --> 
 	<target name="create atm.exe" depends="jar" description="create .exe file">
 		<launch4j>
-		  <config headerType="gui" outfile="atm.exe" 
+		  <config headerType="gui" outfile="ATM.exe" 
 		      dontWrapJar="false" jarPath="${jar.dir}/atm-${version.num}.jar" 
 		  	  icon="${res.dir}/atm.ico">
 		    <jre minVersion="${min.jre.version}">
@@ -52,6 +52,6 @@
 		  </config>
 		</launch4j>
 		
-		<move file="atm.exe" todir="${release.dir}" />
+		<move file="ATM.exe" todir="${release.dir}" />
 	</target>
 </project>
