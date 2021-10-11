@@ -1,11 +1,12 @@
 package atm;
 
-import java.text.DecimalFormat;
-import javax.swing.JOptionPane;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.InputMismatchException;
+
+import javax.swing.JOptionPane;
 
 /**
  * Inherit ATM program for primary methods / operations Performs withdraw

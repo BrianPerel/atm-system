@@ -1,7 +1,7 @@
 package atm;
 
-import java.io.PrintWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Abstract class, since it's methods will be overwritten by sub classes We need

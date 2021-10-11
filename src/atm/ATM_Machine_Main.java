@@ -1,5 +1,18 @@
 package atm;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.security.SecureRandom;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
+
 /**
  * @author Brian Perel
  * @version 1.0
@@ -26,23 +39,12 @@ package atm;
  */
 
 import java.util.Scanner;
-import java.util.InputMismatchException;
-import java.security.SecureRandom;
-import java.io.File;
-import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
+
 import javax.swing.JFrame;
-import javax.swing.JPasswordField;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import java.text.DecimalFormat;
-import java.time.format.DateTimeFormatter;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 
 /**
  * ATM_Machine class will generate GUI Performs logic operations for data and
@@ -132,10 +134,9 @@ public class ATM_Machine_Main extends JFrame {
 			JPasswordField pass = new JPasswordField(10);
 			panel.add(label);
 			panel.add(pass);
-			String[] options = new String[] { "OK", "Cancel" };
 
 			int option = JOptionPane.showOptionDialog(null, panel, HEADER_TITLE, JOptionPane.YES_NO_OPTION,
-					JOptionPane.QUESTION_MESSAGE, null, options, null);
+					JOptionPane.QUESTION_MESSAGE, null, new String[] { "OK", "Cancel" }, null);
 
 			if (option == 0) { // if you press OK button
 				pin = new String(pass.getPassword());
