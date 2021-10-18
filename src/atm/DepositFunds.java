@@ -77,10 +77,8 @@ class DepositFunds extends ATM {
 	}
 
 	@Override
-	public void withdraw(PrintWriter file) throws IOException {
-	}
+	public void withdraw(PrintWriter file) throws IOException {}
 
 	@Override
-	public void transferFunds(String acctNo2, PrintWriter file) throws IOException {
-	}
+	public void transferFunds(String acctNo2, PrintWriter file) throws IOException {}
 }

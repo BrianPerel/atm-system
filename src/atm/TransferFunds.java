@@ -16,8 +16,8 @@ import javax.swing.JOptionPane;
  */
 class TransferFunds extends ATM {
 
-	private final Account account; // first account, transfer funds from
-	private final Account account2; // second account, transfer funds to
+	private final Account account, account2; // first account, transfer funds from. second account, transfer funds to
+
 	static DecimalFormat formatter = new DecimalFormat("$###,###.00"); // formatting to make values include a '$', commas, and
 																// rounding to 2 places
 
@@ -101,10 +101,8 @@ class TransferFunds extends ATM {
 	}
 
 	@Override
-	public void depositCash(PrintWriter file) throws IOException {
-	}
+	public void depositCash(PrintWriter file) throws IOException {}
 
 	@Override
-	public void withdraw(PrintWriter file) throws IOException {
-	}
+	public void withdraw(PrintWriter file) throws IOException {}
 }

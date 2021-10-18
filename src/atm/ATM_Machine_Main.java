@@ -40,6 +40,7 @@ import java.util.InputMismatchException;
 
 import java.util.Scanner;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -69,11 +70,8 @@ public class ATM_Machine_Main extends JFrame {
 
 		/*
 		 * Statements to delete database:
-		 * 
-		 * Runtime rt0 = Runtime.getRuntime(); // create runtime instance to start open
-		 * file process Process p0 = rt0.exec("C:\\xampp\\xampp-control.exe"); // open
-		 * xampp app DBConnector connect = new DBConnector(); // connect class to DB
-		 * class to perform db operations connect.deleteDB(); // statement to delete db
+		 * file process Process p0 = Runtime.getRuntime().exec("C:\\xampp\\xampp-control.exe"); // create runtime instance to start and open xampp app
+		 * new DBConnector().deleteDB(); // statement to delete db
 		 * p0.destroy(); // close xampp app
 		 */
 
@@ -131,15 +129,15 @@ public class ATM_Machine_Main extends JFrame {
 			// create custom pin UI window with input value masking ('*')
 			JPanel panel = new JPanel();
 			JLabel label = new JLabel("Pin: ");
-			JPasswordField pass = new JPasswordField(10);
+			JPasswordField maskedPassword = new JPasswordField(10);
 			panel.add(label);
-			panel.add(pass);
-
+			panel.add(maskedPassword);
+									
 			int option = JOptionPane.showOptionDialog(null, panel, HEADER_TITLE, JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, new String[] { "OK", "Cancel" }, null);
 
 			if (option == 0) { // if you press OK button
-				pin = new String(pass.getPassword());
+				pin = new String(maskedPassword.getPassword());
 			} else { // if you press cancel button
 				closeApp();
 			}
@@ -191,11 +189,8 @@ public class ATM_Machine_Main extends JFrame {
 			acctTypeOption = "Savings";
 		}
 
-		// create account
-		Account account = new Account(acctNo, pin, ((Math.random() % 23) * 100000), acctTypeOption);
-
-		// load to menu
-		menu(account, file, "0", acctTypeOption, receiptFile);
+		// load to menu the new account as you create it 
+		menu(new Account(acctNo, pin, ((Math.random() % 23) * 100000), acctTypeOption), file, "0", acctTypeOption, receiptFile);
 	}
 
 	public static void menu(Account account, PrintWriter file, String select, String savCheck, File receiptFile)
