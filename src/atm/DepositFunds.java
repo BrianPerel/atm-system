@@ -53,7 +53,7 @@ class DepositFunds extends ATM {
 			try {
 				// create connection ptr to database
 				// connect class to DB class to perform db operations
-				new DBConnector().updateData(formatter.format(account.getBalance()), Integer.parseInt(account.getAcctNo())); 
+				new DBConnector().updateData(formatter.format(account.getBalance()), Integer.parseInt(account.getAcctNumber())); 
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}

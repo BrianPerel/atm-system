@@ -41,7 +41,7 @@ public class DBConnector {
 		}
 	}
 
-	public void addData(int acctNo, int pin, String balance, String acctType) throws SQLException {
+	public void addData(int argAcctNumber, int argPin, String argBalance, String argAcctType) throws SQLException {
 
 		try {
 			// create table
@@ -53,8 +53,8 @@ public class DBConnector {
 			// insert data values into table
 			con.createStatement().executeUpdate(
 					new StringBuilder().append("INSERT INTO Accounts (Account_Number, Pin, Account_Balance, Account_Type) ")
-						.append("VALUES (").append(acctNo).append(",").append(pin).append(",").append("\'")
-						.append(balance).append("\'").append(",").append("\'").append(acctType).append("\'").append(")").toString());
+						.append("VALUES (").append(argAcctNumber).append(",").append(argPin).append(",").append("\'")
+						.append(argBalance).append("\'").append(",").append("\'").append(argAcctType).append("\'").append(")").toString());
 			System.out.println("Records added to database ");
 
 		} catch (SQLException ex) {
@@ -64,12 +64,12 @@ public class DBConnector {
 		}
 	}
 
-	public void updateData(String bal, int acctNo) throws SQLException {
+	public void updateData(String argBal, int argAcctNumber) throws SQLException {
 		try {
 			// update record in db
 			System.out.println("Updating record...");
 			con.createStatement().executeUpdate(
-					"UPDATE Accounts SET Account_Balance= " + "\'" + bal + "\'" + " WHERE Account_Number=" + acctNo);
+					"UPDATE Accounts SET Account_Balance= " + "\'" + argBal + "\'" + " WHERE Account_Number=" + argAcctNumber);
 			System.out.println("Record updated successfully...");
 
 		} catch (SQLException ex) {
@@ -79,10 +79,10 @@ public class DBConnector {
 		}
 	}
 
-	public void terminateAccount(int acctNo) throws SQLException {
+	public void terminateAccount(int argAcctNumber) throws SQLException {
 		// delete record from table 'Accounts'
 		try {
-			con.createStatement().executeUpdate("DELETE FROM Accounts WHERE Account_Number= " + acctNo);
+			con.createStatement().executeUpdate("DELETE FROM Accounts WHERE Account_Number= " + argAcctNumber);
 			System.out.println("Account deleted successfully...");
 		} catch (SQLException ex) {
 			System.out.println(ex);

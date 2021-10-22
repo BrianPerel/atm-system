@@ -6,7 +6,7 @@ package atm;
 class Account {
 
 	private int hashCodeNumber;
-	private String acctNo;
+	private String acctNumber;
 	private String acctPin;
 	private String acctType;
 	private double acctBalance;
@@ -16,12 +16,12 @@ class Account {
 	}
 
 	public Account(String acctNo, String pin) {
-		this.acctNo = acctNo;
+		this.acctNumber = acctNo;
 		this.acctPin = pin;
 	}
 
 	public Account(String acctNo, String pin, double balance, String acctType) throws IllegalArgumentException {
-		this.acctNo = acctNo;
+		this.acctNumber = acctNo;
 		this.acctPin = pin;
 		this.acctType = acctType;
 
@@ -36,8 +36,8 @@ class Account {
 		this.hashCodeNumber = number;
 	}
 
-	public void setAcctNo(String acctNo) {
-		this.acctNo = acctNo;
+	public void setAcctNumber(String acctNo) {
+		this.acctNumber = acctNo;
 	}
 
 	public void setPIN(String pin) {
@@ -60,8 +60,8 @@ class Account {
 		return this.hashCodeNumber;
 	}
 
-	public String getAcctNo() {
-		return this.acctNo;
+	public String getAcctNumber() {
+		return this.acctNumber;
 	}
 
 	public String getPIN() {
@@ -79,7 +79,7 @@ class Account {
 	@Override
 	public String toString() {
 		return String.format("\tAccount number: %s%n\tPIN number: %s%n\tAccount balance: $%,.2f%n\tAccount type: %s%n",
-				this.acctNo, this.acctPin, this.acctBalance, this.acctType);
+				this.acctNumber, this.acctPin, this.acctBalance, this.acctType);
 	}
 
 	@Override

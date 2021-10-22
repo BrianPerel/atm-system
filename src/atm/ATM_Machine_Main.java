@@ -52,7 +52,7 @@ import javax.swing.JPasswordField;
  */
 public class ATM_Machine_Main extends JFrame {
 
-	static String acctNo;
+	static String acctNumber;
 	static String pin = "";
 	static String acctTypeOption;
 	static File receiptFile = new File("");
@@ -95,10 +95,10 @@ public class ATM_Machine_Main extends JFrame {
 			dateTimeFormat = DateTimeFormatter.ofPattern("MMM dd, h:mm a");
 
 			try {
-				acctNo = JOptionPane.showInputDialog(null, "Today is: " + now.format(dateTimeFormat) + "\nAccount Number: ",
+				acctNumber = JOptionPane.showInputDialog(null, "Today is: " + now.format(dateTimeFormat) + "\nAccount Number: ",
 						HEADER_TITLE, JOptionPane.QUESTION_MESSAGE);
 
-				if (acctNo.equalsIgnoreCase("cancel")) {
+				if (acctNumber.equalsIgnoreCase("cancel")) {
 					JOptionPane.showMessageDialog(null, "Have a nice day!", GOODBYE, JOptionPane.QUESTION_MESSAGE);
 					closeApp();
 				}
@@ -110,11 +110,11 @@ public class ATM_Machine_Main extends JFrame {
 			file.printf("%n\tATM - City Central Bank%nToday is: %s%n", now.format(dateTimeFormat));
 			attempts++;
 
-			if (acctNo.length() != 8 || !(acctNo.matches(ZERO_TO_NINE_REG_EXP))) {
+			if (acctNumber.length() != 8 || !(acctNumber.matches(ZERO_TO_NINE_REG_EXP))) {
 				JOptionPane.showMessageDialog(null, "Invalid Account Number!", WARNING, JOptionPane.WARNING_MESSAGE);
 			}
 
-		} while (acctNo.length() != 8 || !(acctNo.matches(ZERO_TO_NINE_REG_EXP)));
+		} while (acctNumber.length() != 8 || !(acctNumber.matches(ZERO_TO_NINE_REG_EXP)));
 
 		attempts = 0;
 
@@ -127,9 +127,8 @@ public class ATM_Machine_Main extends JFrame {
 
 			// create custom pin UI window with input value masking ('*')
 			JPanel panel = new JPanel();
-			JLabel label = new JLabel("Pin: ");
 			JPasswordField maskedPassword = new JPasswordField(10);
-			panel.add(label);
+			panel.add(new JLabel("Pin: "));
 			panel.add(maskedPassword);
 									
 			int option = JOptionPane.showOptionDialog(null, panel, HEADER_TITLE, JOptionPane.YES_NO_OPTION,
@@ -189,10 +188,10 @@ public class ATM_Machine_Main extends JFrame {
 		}
 
 		// load to menu the new account as you create it 
-		menu(new Account(acctNo, pin, ((Math.random() % 23) * 100000), acctTypeOption), file, "0", acctTypeOption, receiptFile);
+		menu(new Account(acctNumber, pin, ((Math.random() % 23) * 100000), acctTypeOption), file, "0", acctTypeOption, receiptFile);
 	}
 
-	public static void menu(Account account, PrintWriter file, String select, String savCheck, File receiptFile)
+	public static void menu(Account argAccount, PrintWriter argFile, String argSelect, String argAcctTypeOption, File argReceiptFile)
 			throws IOException, SQLException {
 		boolean isAcctTerminated = false; // flag checks if account has been terminated by user or not
 
@@ -201,31 +200,31 @@ public class ATM_Machine_Main extends JFrame {
 
 		// create connection ptr to database
 		DBConnector connect = new DBConnector(); // connect class to DB class to perform db operations
-		connect.addData(Integer.parseInt(acctNo), Integer.parseInt(pin), 
-				formatter.format(account.getBalance()), savCheck); // add data to db
+		connect.addData(Integer.parseInt(acctNumber), Integer.parseInt(pin), 
+				formatter.format(argAccount.getBalance()), argAcctTypeOption); // add data to db
 
 		do {
 			try {
 				// display menu for user
-				select = JOptionPane.showInputDialog(null,
+				argSelect = JOptionPane.showInputDialog(null,
 						"Enter:\n\t1. (1) for balance inquiry\n\t2. (2) for cash withdrawal"
 								+ "\n\t3. (3) for cash deposit\n\t4. (4) to terminate account\n\t5."
 								+ " (5) to transfer funds\n\t6. (6) (Save) Serialize Account"
 								+ "\n\t7. (7) (Load) Deserialize Account \n\t8. (8) to quit\n\n\tSelect your transaction: \n",
 						HEADER_TITLE, JOptionPane.QUESTION_MESSAGE);
 
-				switch (select) {
+				switch (argSelect) {
 					// balance inquiry
 					case "1": {					
-						if (account != null) {
-							JOptionPane.showMessageDialog(null, account, "Balance Inquiry",
+						if (argAccount != null) {
+							JOptionPane.showMessageDialog(null, argAccount, "Balance Inquiry",
 									JOptionPane.INFORMATION_MESSAGE);
-							file.print("\nBalance inquiry...\n" + account);
+							argFile.print("\nBalance inquiry...\n" + argAccount);
 							break;
 						}
 						
 						JOptionPane.showMessageDialog(null, "Account is empty", WARNING, JOptionPane.WARNING_MESSAGE);
-						file.print("Balance inquiry...\n\tAccount doesn't exist");
+						argFile.print("Balance inquiry...\n\tAccount doesn't exist");
 							
 						break;
 					}
@@ -238,8 +237,8 @@ public class ATM_Machine_Main extends JFrame {
 							continue;
 						}
 						
-						ATM w1 = new WithdrawFunds(account);
-						w1.withdraw(file);
+						ATM w1 = new WithdrawFunds(argAccount);
+						w1.withdraw(argFile);
 						break;
 					}
 	
@@ -250,8 +249,8 @@ public class ATM_Machine_Main extends JFrame {
 									JOptionPane.WARNING_MESSAGE);
 							continue;
 						}
-						ATM d1 = new DepositFunds(account);
-						d1.depositCash(file);
+						ATM d1 = new DepositFunds(argAccount);
+						d1.depositCash(argFile);
 						break;
 					}
 	
@@ -263,14 +262,14 @@ public class ATM_Machine_Main extends JFrame {
 							continue;
 						}
 	
-						connect.terminateAccount(Integer.parseInt(account.getAcctNo())); // deletes account from db table @
+						connect.terminateAccount(Integer.parseInt(argAccount.getAcctNumber())); // deletes account from db table @
 																							// localhost site
 	
-						account = null; // set account to value of null (clearing all attribute values)
+						argAccount = null; // set account to value of null (clearing all attribute values)
 						JOptionPane.showMessageDialog(null, "Account has been terminated\n", "Account Termination",
 								JOptionPane.INFORMATION_MESSAGE);
 	
-						file.println("\nAccount has been terminated");
+						argFile.println("\nAccount has been terminated");
 						isAcctTerminated = true; // flip flag so that certain ops can't be done under a terminated account
 						break;
 					}
@@ -287,16 +286,16 @@ public class ATM_Machine_Main extends JFrame {
 						do {
 							acctNo2 = JOptionPane.showInputDialog(null, "\nAccount Number 2: ", "Account Terminated",
 									JOptionPane.QUESTION_MESSAGE);
-							if (acctNo.equals(acctNo2) || acctNo2.length() != 8
+							if (acctNumber.equals(acctNo2) || acctNo2.length() != 8
 									|| !(acctNo2.matches(ZERO_TO_NINE_REG_EXP))) {
 								JOptionPane.showMessageDialog(null, "Invalid Account!", WARNING,
 										JOptionPane.WARNING_MESSAGE);
 							}
-						} while (acctNo.equals(acctNo2) || (acctNo2.length() != 8
+						} while (acctNumber.equals(acctNo2) || (acctNo2.length() != 8
 								|| !(acctNo2.matches(ZERO_TO_NINE_REG_EXP))));
-						Account account2 = new Account(acctNo2, pin, (Math.random() % 21) * 100000, savCheck);
-						ATM t1 = new TransferFunds(account, account2);
-						t1.transferFunds(acctNo2, file);
+						Account account2 = new Account(acctNo2, pin, (Math.random() % 21) * 100000, argAcctTypeOption);
+						ATM t1 = new TransferFunds(argAccount, account2);
+						t1.transferFunds(acctNo2, argFile);
 						break;
 					}
 	
@@ -315,7 +314,7 @@ public class ATM_Machine_Main extends JFrame {
 							ObjectOutputStream out = new ObjectOutputStream(file1);
 	
 							// method for object serialization
-							out.writeObject(account);
+							out.writeObject(argAccount);
 	
 							// close serialization process
 							out.close();
@@ -352,7 +351,7 @@ public class ATM_Machine_Main extends JFrame {
 		
 							// print out the saved data from binary file
 							JOptionPane.showMessageDialog(null,
-									new StringBuilder().append("\nAccount Number: ").append(account1.getAcctNo())
+									new StringBuilder().append("\nAccount Number: ").append(account1.getAcctNumber())
 											.append("\nAccount Pin: ").append(account1.getPIN())
 											.append("\nAccount Balance: ").append(formatter.format(account1.getBalance()))
 											.append("\nAccount type: ").append(account1.getType()),
@@ -370,25 +369,25 @@ public class ATM_Machine_Main extends JFrame {
 	
 					// exit program
 					case "8": {
-						file.print("\n\n\nHave a nice day!");
+						argFile.print("\n\n\nHave a nice day!");
 						processToOpenXampp.destroy(); // close xampp app
 						String in = JOptionPane.showInputDialog(null, "\nWould you like a receipt? ", "Receipt?",
 								JOptionPane.QUESTION_MESSAGE);
 						
-						file.close();
+						argFile.close();
 	
 						if (in.equalsIgnoreCase("no") || in.equalsIgnoreCase("n") || in.equalsIgnoreCase("cancel")) {
-							receiptFile.delete();
+							argReceiptFile.delete();
 							JOptionPane.showMessageDialog(null, "\nHave a nice day!", GOODBYE,
 									JOptionPane.QUESTION_MESSAGE);
 							System.exit(0);
 						} 
 						
-						JOptionPane.showMessageDialog(null, "Receipt saved as: " + receiptFile.getName(), "Receipt",
+						JOptionPane.showMessageDialog(null, "Receipt saved as: " + argReceiptFile.getName(), "Receipt",
 								JOptionPane.INFORMATION_MESSAGE);
 						JOptionPane.showMessageDialog(null, "\nHave a nice day!", GOODBYE,
 								JOptionPane.QUESTION_MESSAGE);
-						Runtime.getRuntime().exec("notepad " + receiptFile); // open notepad program with pre-selected file
+						Runtime.getRuntime().exec("notepad " + argReceiptFile); // open notepad program with pre-selected file
 					
 						System.exit(0);
 					}
@@ -407,7 +406,7 @@ public class ATM_Machine_Main extends JFrame {
 				processToOpenXampp.destroy(); // close xampp app
 				closeApp();
 			}
-		} while (!select.equals("8"));
+		} while (!argSelect.equals("8"));
 	}
 	
 	public static void closeApp() {
