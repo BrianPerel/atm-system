@@ -69,6 +69,7 @@ public class ATM_Machine_Main extends JFrame {
 
 		/*
 		 * Statements to delete database:
+		 * 
 		 * file process Process p0 = Runtime.getRuntime().exec("C:\\xampp\\xampp-control.exe"); // create runtime instance to start and open xampp app
 		 * new DBConnector().deleteDB(); // statement to delete db
 		 * p0.destroy(); // close xampp app
@@ -95,7 +96,7 @@ public class ATM_Machine_Main extends JFrame {
 			dateTimeFormat = DateTimeFormatter.ofPattern("MMM dd, h:mm a");
 
 			try {
-				acctNumber = JOptionPane.showInputDialog(null, "Today is: " + now.format(dateTimeFormat) + "\nAccount Number: ",
+				acctNumber = JOptionPane.showInputDialog(null, "Today is: ".concat(now.format(dateTimeFormat)).concat("\nAccount Number: "),
 						HEADER_TITLE, JOptionPane.QUESTION_MESSAGE);
 
 				if (acctNumber.equalsIgnoreCase("cancel")) {
@@ -208,9 +209,9 @@ public class ATM_Machine_Main extends JFrame {
 				// display menu for user
 				argSelect = JOptionPane.showInputDialog(null,
 						"Enter:\n\t1. (1) for balance inquiry\n\t2. (2) for cash withdrawal"
-								+ "\n\t3. (3) for cash deposit\n\t4. (4) to terminate account\n\t5."
-								+ " (5) to transfer funds\n\t6. (6) (Save) Serialize Account"
-								+ "\n\t7. (7) (Load) Deserialize Account \n\t8. (8) to quit\n\n\tSelect your transaction: \n",
+								.concat("\n\t3. (3) for cash deposit\n\t4. (4) to terminate account\n\t5.")
+								.concat(" (5) to transfer funds\n\t6. (6) (Save) Serialize Account")
+								.concat("\n\t7. (7) (Load) Deserialize Account \n\t8. (8) to quit\n\n\tSelect your transaction: \n"),
 						HEADER_TITLE, JOptionPane.QUESTION_MESSAGE);
 
 				switch (argSelect) {
@@ -310,15 +311,13 @@ public class ATM_Machine_Main extends JFrame {
 						// Serialization
 						try {
 							// Save object state to a binary file
-							FileOutputStream file1 = new FileOutputStream("AccountData.dat");
-							ObjectOutputStream out = new ObjectOutputStream(file1);
+							ObjectOutputStream out = new ObjectOutputStream( new FileOutputStream("AccountData.dat"));
 	
 							// method for object serialization
 							out.writeObject(argAccount);
 	
 							// close serialization process
 							out.close();
-							file1.close();
 	
 							JOptionPane.showMessageDialog(null, "\nObject has been serialized", "Serialize",
 									JOptionPane.QUESTION_MESSAGE);
@@ -342,8 +341,7 @@ public class ATM_Machine_Main extends JFrame {
 	
 						// Deserialization process
 						try {
-							FileInputStream file2 = new FileInputStream("AccountData.dat");
-							ObjectInputStream in = new ObjectInputStream(file2);
+							ObjectInputStream in = new ObjectInputStream(new FileInputStream("AccountData.dat"));
 	
 							account1 = (Account) in.readObject(); // store the content from binary file to a reference
 																	// variable (object)
