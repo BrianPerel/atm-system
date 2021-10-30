@@ -8,7 +8,8 @@ import java.io.PrintWriter;
  * the account field so that we can call methods of account class Has method to
  * display the balance, holds abstract methods for basic app operations
  */
-abstract class ATM {
+public abstract class ATM {
+	
 	private final Account account;
 
 	protected ATM(Account account) {

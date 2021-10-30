@@ -13,7 +13,8 @@ import javax.swing.JOptionPane;
  * operation -asks for deposit amount, checks amount range and format, performs
  * op
  */
-class DepositFunds extends ATM {
+public class DepositFunds extends ATM {
+	
 	static DecimalFormat formatter = new DecimalFormat("$###,###.00"); // for decimal rounding (to 2 places, plus $ and comma
 																// insertion)
 	private final Account account;

@@ -3,7 +3,7 @@ package atm;
 /**
  * Class to setup Account object, operations Attributes: account type, number, pin, balance
  */
-class Account {
+public class Account {
 
 	private int hashCodeNumber;
 	private String acctNumber;

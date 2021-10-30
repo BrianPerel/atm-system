@@ -167,25 +167,23 @@ public class ATM_Machine_Main extends JFrame {
 
 			// for some reason when user enters 'checkings' for acct type invalid type flag is raised
 			// this is a current work around for that problem
-			if (acctTypeOption.equalsIgnoreCase("Checkings")) {
-				acctTypeOption = "C";
+			if (acctTypeOption.equalsIgnoreCase("checkings")) {
+				acctTypeOption = "c";
 			}
 
-			if (!(acctTypeOption.equalsIgnoreCase("S")) && !(acctTypeOption.equalsIgnoreCase("C"))
-					&& !(acctTypeOption.equalsIgnoreCase("Savings") && !(acctTypeOption.equalsIgnoreCase("Checkings")))) {
+			if (!(acctTypeOption.equalsIgnoreCase("s")) && !(acctTypeOption.equalsIgnoreCase("c"))
+					&& !(acctTypeOption.equalsIgnoreCase("savings") && !(acctTypeOption.equalsIgnoreCase("checkings")))) {
 				JOptionPane.showMessageDialog(null, "Invalid option!", WARNING, JOptionPane.WARNING_MESSAGE);
 			}
 
-		} while (!acctTypeOption.matches("[a-zA-Z]+") || (!(acctTypeOption.equalsIgnoreCase("S"))
-				&& !(acctTypeOption.equalsIgnoreCase("C"))
+		} while (!acctTypeOption.matches("[a-zA-Z]+") || (!(acctTypeOption.equalsIgnoreCase("s"))
+				&& !(acctTypeOption.equalsIgnoreCase("c"))
 				&& !(acctTypeOption.equalsIgnoreCase("Savings") && !(acctTypeOption.equalsIgnoreCase("Checkings")))));
 
 		if (acctTypeOption.equalsIgnoreCase("c") || acctTypeOption.equalsIgnoreCase("checkings")) {
-			acctTypeOption = "Checkings";
-		}
-
-		else if (acctTypeOption.equalsIgnoreCase("s") || acctTypeOption.equalsIgnoreCase("savings")) {
-			acctTypeOption = "Savings";
+			acctTypeOption = "checkings";
+		} else if (acctTypeOption.equalsIgnoreCase("s") || acctTypeOption.equalsIgnoreCase("savings")) {
+			acctTypeOption = "savings";
 		}
 
 		// load to menu the new account as you create it 
@@ -388,6 +386,7 @@ public class ATM_Machine_Main extends JFrame {
 						Runtime.getRuntime().exec("notepad " + argReceiptFile); // open notepad program with pre-selected file
 					
 						System.exit(0);
+						break;
 					}
 	
 					default: {

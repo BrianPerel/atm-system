@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  * boundary range and format, perform op -performs file write while class is
  * executed
  */
-class TransferFunds extends ATM {
+public class TransferFunds extends ATM {
 
 	private final Account account, account2; // first account, transfer funds from. second account, transfer funds to
 
