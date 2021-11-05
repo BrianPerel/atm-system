@@ -30,7 +30,7 @@ public class DepositFunds extends ATM {
 		String depositAmt;
 
 		do {
-			depositAmt = JOptionPane.showInputDialog(null, "\n\nDeposit amount: $", "Deposit",
+			depositAmt = JOptionPane.showInputDialog(null, "Deposit amount: $", "Deposit",
 					JOptionPane.QUESTION_MESSAGE);
 
 			if (!depositAmt.matches("[0-9.]+")) {

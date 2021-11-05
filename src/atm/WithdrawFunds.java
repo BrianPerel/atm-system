@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 public class WithdrawFunds extends ATM {
 
 	private final Account account;
-	static DecimalFormat formatter = new DecimalFormat("$###,###.00");
+	static DecimalFormat df = new DecimalFormat("$###,###.00");
 
 	public WithdrawFunds(Account account) {
 		super(account);
@@ -30,7 +30,7 @@ public class WithdrawFunds extends ATM {
 
 		// check for numeric input format, loop until correct format entered
 		do {
-			money0 = JOptionPane.showInputDialog(null, "\nWithdraw amount: $", "Withdraw",
+			money0 = JOptionPane.showInputDialog(null, "Withdraw amount: $", "Withdraw",
 					JOptionPane.QUESTION_MESSAGE);
 
 			if (!money0.matches("[0-9.]+")) {
@@ -47,7 +47,7 @@ public class WithdrawFunds extends ATM {
 			this.account.setBalance(this.account.getBalance() - money);
 			file.print("\n\n\n Withdrawing...");
 			JOptionPane.showMessageDialog(null,
-					"Withdraw Complete! Your New Balance is: " + formatter.format(account.getBalance()), "Withdraw",
+					"Withdraw Complete! Your New Balance is: " + df.format(account.getBalance()), "Withdraw",
 					JOptionPane.QUESTION_MESSAGE);
 			file.printf("%nWithdraw complete! Your New Balance is: $%,.2f%n", account.getBalance());
 
@@ -55,7 +55,7 @@ public class WithdrawFunds extends ATM {
 			try {
 				// create connection ptr to database
 				// connect class to DB class to perform db operations and add data to db
-				new DBConnector().updateData(formatter.format(account.getBalance()), Integer.parseInt(account.getAcctNumber())); 
+				new DBConnector().updateData(df.format(account.getBalance()), Integer.parseInt(account.getAcctNumber())); 
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}

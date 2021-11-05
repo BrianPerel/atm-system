@@ -18,7 +18,7 @@ public class TransferFunds extends ATM {
 
 	private final Account account, account2; // first account, transfer funds from. second account, transfer funds to
 
-	static DecimalFormat formatter = new DecimalFormat("$###,###.00"); // formatting to make values include a '$', commas, and
+	static DecimalFormat df = new DecimalFormat("$###,###.00"); // formatting to make values include a '$', commas, and
 																// rounding to 2 places
 
 	public TransferFunds(Account account, Account account2) {
@@ -52,20 +52,20 @@ public class TransferFunds extends ATM {
 			JOptionPane.showMessageDialog(null,
 					new StringBuilder("\nTransfer complete!\n\nYour New Balance for Account 1 (")
 						.append(account.getAcctNumber()).append(") is: ")
-						.append(formatter.format(this.account.getBalance())).append("\nYour New Balance for Account 2 (")
+						.append(df.format(this.account.getBalance())).append("\nYour New Balance for Account 2 (")
 						.append(this.account2.getAcctNumber()).append(") is: ")
-						.append(formatter.format(this.account2.getBalance())),
+						.append(df.format(this.account2.getBalance())),
 					"ATM - City Central Bank", JOptionPane.QUESTION_MESSAGE);
 
 			file.printf("Transfer complete! Your New Balance for Account " + account.getAcctNumber() + " is: "
-					+ formatter.format(this.account.getBalance()) + "\nYour New Balance for Account "
-					+ this.account2.getAcctNumber() + " is: " + formatter.format(this.account2.getBalance()));
+					+ df.format(this.account.getBalance()) + "\nYour New Balance for Account "
+					+ this.account2.getAcctNumber() + " is: " + df.format(this.account2.getBalance()));
 
 			// update db record in table (since withdraw op performed on account)
 			try {
 				// create connection ptr to database
 				// connect class to DB class to perform db operations and add data to db
-				new DBConnector().updateData(formatter.format(account.getBalance()), Integer.parseInt(account.getAcctNumber())); 
+				new DBConnector().updateData(df.format(account.getBalance()), Integer.parseInt(account.getAcctNumber())); 
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}

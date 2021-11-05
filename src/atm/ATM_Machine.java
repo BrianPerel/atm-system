@@ -50,20 +50,21 @@ import javax.swing.JPasswordField;
  * ATM_Machine class will generate GUI Performs logic operations for data and
  * choices entered
  */
-public class ATM_Machine_Main extends JFrame {
+public class ATM_Machine extends JFrame {
 
-	static String acctNumber;
-	static String pin = "";
-	static String acctTypeOption;
-	static File receiptFile = new File("");
-	static PrintWriter file = null;
-	static final String WARNING = "Warning";
-	static final String GOODBYE = "Goodbye";
-	static final String ZERO_TO_NINE_REG_EXP = "[0-9]+";
-	static final String HEADER_TITLE = "ATM - City Central Bank";
-	static DecimalFormat formatter = new DecimalFormat("$###,###.00");
-	static Scanner input = new Scanner(System.in);
-	static SecureRandom randomGenerator = new SecureRandom();
+	private static String acctNumber;
+	private static String pin = "";
+	private static String acctTypeOption;
+	private static File receiptFile = new File("");
+	private static PrintWriter file = null;
+	private static final String WARNING = "Warning";
+	private static final String GOODBYE = "Goodbye";
+	private static final String ZERO_TO_NINE_REG_EXP = "[0-9]+";
+	private static final String HEADER_TITLE = "ATM - City Central Bank";
+	private static final long serialVersionUID = -4923383132218838840L;
+	private static DecimalFormat df = new DecimalFormat("$###,###.00");
+	private static Scanner input = new Scanner(System.in);
+	private static SecureRandom randomGenerator = new SecureRandom();
 
 	public static void main(String[] args) throws IOException, SQLException {
 
@@ -178,7 +179,7 @@ public class ATM_Machine_Main extends JFrame {
 
 		} while (!acctTypeOption.matches("[a-zA-Z]+") || (!(acctTypeOption.equalsIgnoreCase("s"))
 				&& !(acctTypeOption.equalsIgnoreCase("c"))
-				&& !(acctTypeOption.equalsIgnoreCase("Savings") && !(acctTypeOption.equalsIgnoreCase("Checkings")))));
+				&& !(acctTypeOption.equalsIgnoreCase("savings") && !(acctTypeOption.equalsIgnoreCase("checkings")))));
 
 		if (acctTypeOption.equalsIgnoreCase("c") || acctTypeOption.equalsIgnoreCase("checkings")) {
 			acctTypeOption = "checkings";
@@ -200,7 +201,7 @@ public class ATM_Machine_Main extends JFrame {
 		// create connection ptr to database
 		DBConnector connect = new DBConnector(); // connect class to DB class to perform db operations
 		connect.addData(Integer.parseInt(acctNumber), Integer.parseInt(pin), 
-				formatter.format(argAccount.getBalance()), argAcctTypeOption); // add data to db
+				df.format(argAccount.getBalance()), argAcctTypeOption); // add data to db
 
 		do {
 			try {
@@ -303,26 +304,10 @@ public class ATM_Machine_Main extends JFrame {
 						if (isAcctTerminated) {
 							JOptionPane.showMessageDialog(null, "Account is empty, can't serialize!", WARNING,
 									JOptionPane.WARNING_MESSAGE);
-							continue;
+						} else {
+							serialize(argAccount);
 						}
-	
-						// Serialization
-						try {
-							// Save object state to a binary file
-							ObjectOutputStream out = new ObjectOutputStream( new FileOutputStream("AccountData.dat"));
-	
-							// method for object serialization
-							out.writeObject(argAccount);
-	
-							// close serialization process
-							out.close();
-	
-							JOptionPane.showMessageDialog(null, "\nObject has been serialized", "Serialize",
-									JOptionPane.QUESTION_MESSAGE);
-						} catch (IOException ex) {
-							System.out.println("IOException is caught");
-						}
-	
+						
 						break;
 					}
 	
@@ -331,35 +316,10 @@ public class ATM_Machine_Main extends JFrame {
 						if (isAcctTerminated) {
 							JOptionPane.showMessageDialog(null, "Account is empty, can't serialize!", WARNING,
 									JOptionPane.WARNING_MESSAGE);
-							continue;
+						} else {
+							deserialize();
 						}
-							
-						Account account1 = null; // create the empty object, request os to allocate chunk of memory to store
-													// contents from file
-	
-						// Deserialization process
-						try {
-							ObjectInputStream in = new ObjectInputStream(new FileInputStream("AccountData.dat"));
-	
-							account1 = (Account) in.readObject(); // store the content from binary file to a reference
-																	// variable (object)
-																	// after reading = deserialize
-		
-							// print out the saved data from binary file
-							JOptionPane.showMessageDialog(null,
-									new StringBuilder().append("\nAccount Number: ").append(account1.getAcctNumber())
-											.append("\nAccount Pin: ").append(account1.getPIN())
-											.append("\nAccount Balance: ").append(formatter.format(account1.getBalance()))
-											.append("\nAccount type: ").append(account1.getType()),
-									"Deserialize", JOptionPane.QUESTION_MESSAGE);
-	
-							in.close();
-							
-						} catch (IOException ex) {
-							System.out.println("Deserialization error!");
-						} catch (ClassNotFoundException ex) {
-							System.out.println("Class not found error!");
-						}
+						
 						break;
 					}
 	
@@ -404,6 +364,51 @@ public class ATM_Machine_Main extends JFrame {
 				closeApp();
 			}
 		} while (!argSelect.equals("8"));
+	}
+	
+	public static void serialize(Account argAccount) {
+		// Serialization
+		try {
+			// Save object state to a binary file
+			ObjectOutputStream out = new ObjectOutputStream( new FileOutputStream("AccountData.dat"));
+
+			// method for object serialization
+			out.writeObject(argAccount);
+
+			// close serialization process
+			out.close();
+
+			JOptionPane.showMessageDialog(null, "\nObject has been serialized", "Serialize",
+					JOptionPane.QUESTION_MESSAGE);
+		} catch (IOException ex) {
+			System.out.println("IOException is caught");
+		}
+	}
+	
+	public static void deserialize() {
+		// Deserialization process
+		try {
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream("AccountData.dat"));
+
+			Account account1 = (Account) in.readObject(); // store the content from binary file to a reference
+													// variable (object)
+													// after reading = deserialize
+
+			// print out the saved data from binary file
+			JOptionPane.showMessageDialog(null,
+					new StringBuilder().append("\nAccount Number: ").append(account1.getAcctNumber())
+							.append("\nAccount Pin: ").append(account1.getPIN())
+							.append("\nAccount Balance: ").append(df.format(account1.getBalance()))
+							.append("\nAccount type: ").append(account1.getType()),
+					"Deserialize", JOptionPane.QUESTION_MESSAGE);
+
+			in.close();
+			
+		} catch (IOException ex) {
+			System.out.println("Deserialization error!");
+		} catch (ClassNotFoundException ex) {
+			System.out.println("Class not found error!");
+		}
 	}
 	
 	public static void closeApp() {

@@ -57,29 +57,29 @@ public class Account {
 	}
 
 	public int getNumber() {
-		return this.hashCodeNumber;
+		return hashCodeNumber;
 	}
 
 	public String getAcctNumber() {
-		return this.acctNumber;
+		return acctNumber;
 	}
 
 	public String getPIN() {
-		return this.acctPin;
+		return acctPin;
 	}
 
 	public double getBalance() {
-		return this.acctBalance;
+		return acctBalance;
 	}
 
 	public String getType() {
-		return this.acctType;
+		return acctType;
 	}
 
 	@Override
 	public String toString() {
 		return String.format("\tAccount number: %s%n\tPIN number: %s%n\tAccount balance: $%,.2f%n\tAccount type: %s%n",
-				this.acctNumber, this.acctPin, this.acctBalance, this.acctType);
+				acctNumber, acctPin, acctBalance, acctType);
 	}
 
 	@Override
