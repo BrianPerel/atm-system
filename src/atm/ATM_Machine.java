@@ -82,18 +82,18 @@ public class ATM_Machine extends JFrame {
 
 		attempts = 0;
 
-		getAcctPinNumber(attempts);
+		getAcctPINNumberPrompt(attempts);
 
 		getAcctTypePrompt();
 
 		if (acctTypeOption.equalsIgnoreCase("c") || acctTypeOption.equalsIgnoreCase("checkings")) {
-			acctTypeOption = "checkings";
+			acctTypeOption = "Checkings";
 		} else if (acctTypeOption.equalsIgnoreCase("s") || acctTypeOption.equalsIgnoreCase("savings")) {
-			acctTypeOption = "savings";
+			acctTypeOption = "Savings";
 		}
 
 		// load to menu the new account as you create it
-		menu(new Account(acctNumber, pin, ((Math.random() % 23) * 100000), acctTypeOption), file, "0", acctTypeOption,
+		displayMenu(new Account(acctNumber, pin, ((Math.random() % 23) * 100000), acctTypeOption), file, "0", acctTypeOption,
 				receiptFile);
 	}
 
@@ -136,7 +136,7 @@ public class ATM_Machine extends JFrame {
 	 * Handles the retrieval of acct pin number from user
 	 * @param attempts tracks the number of attempts used to enter PIN
 	 */
-	public static void getAcctPinNumber(int attempts) {
+	public static void getAcctPINNumberPrompt(int attempts) {
 		do {
 			if (attempts == 3) {
 				JOptionPane.showMessageDialog(null, "Max tries exceeded, ATM System locked! Restart to unlock",
@@ -219,7 +219,7 @@ public class ATM_Machine extends JFrame {
 	 * @throws IOException
 	 * @throws SQLException
 	 */
-	public static void menu(Account argAccount, PrintWriter argFile, String argSelect, String argAcctTypeOption,
+	public static void displayMenu(Account argAccount, PrintWriter argFile, String argSelect, String argAcctTypeOption,
 			File argReceiptFile) throws IOException, SQLException {
 		boolean isAcctTerminated = false; // flag checks if account has been terminated by user or not
 
