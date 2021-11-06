@@ -31,19 +31,7 @@ public class TransferFunds extends ATM {
 	public void transferFunds(String acctNo2, PrintWriter file) throws IOException {
 
 		String transferAmt;
-
-		// amount entered must be of numeric format, re-prompt every time format is incorrect
-		do {
-			transferAmt = JOptionPane.showInputDialog(null, "\nTransfer amount: $", "ATM", JOptionPane.QUESTION_MESSAGE);
-
-			if (!transferAmt.matches("[0-9.]+")) {
-				JOptionPane.showMessageDialog(null, "Invalid amount!", "Warning", JOptionPane.WARNING_MESSAGE);
-			}
-
-		} while (!transferAmt.matches("[0-9.]+"));
-
-		double money = Double.parseDouble(transferAmt);
-		file.print("\n\tTransfer amount: $" + money);
+		double money = getTransferAmt(file);
 
 		// valid amount range
 		if (money > 0 && money < this.account.getBalance()) {
@@ -57,7 +45,7 @@ public class TransferFunds extends ATM {
 						.append(df.format(this.account2.getBalance())),
 					"ATM - City Central Bank", JOptionPane.QUESTION_MESSAGE);
 
-			file.printf("Transfer complete! Your New Balance for Account " + account.getAcctNumber() + " is: "
+			file.print("Transfer complete! Your New Balance for Account " + account.getAcctNumber() + " is: "
 					+ df.format(this.account.getBalance()) + "\nYour New Balance for Account "
 					+ this.account2.getAcctNumber() + " is: " + df.format(this.account2.getBalance()));
 
@@ -98,6 +86,24 @@ public class TransferFunds extends ATM {
 
 			transferFunds(acctNo2, file);
 		}
+	}
+
+	public double getTransferAmt(PrintWriter file) {
+		String transferAmt;
+
+		// amount entered must be of numeric format, re-prompt every time format is incorrect
+		do {
+			transferAmt = JOptionPane.showInputDialog(null, "\nTransfer amount: $", "ATM", JOptionPane.QUESTION_MESSAGE);
+
+			if (!transferAmt.matches("[0-9.]+")) {
+				JOptionPane.showMessageDialog(null, "Invalid amount!", "Warning", JOptionPane.WARNING_MESSAGE);
+			}
+
+		} while (!transferAmt.matches("[0-9.]+"));
+
+		double money = Double.parseDouble(transferAmt);
+		file.print("\n\tTransfer amount: $" + money);
+		return money;
 	}
 
 	@Override

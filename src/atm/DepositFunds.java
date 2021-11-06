@@ -27,20 +27,7 @@ public class DepositFunds extends ATM {
 	@Override
 	public void depositCash(PrintWriter file) {
 
-		String depositAmt;
-
-		do {
-			depositAmt = JOptionPane.showInputDialog(null, "Deposit amount: $", "Deposit",
-					JOptionPane.QUESTION_MESSAGE);
-
-			if (!depositAmt.matches("[0-9.]+")) {
-				JOptionPane.showMessageDialog(null, "Invalid amount!", "Warning", JOptionPane.WARNING_MESSAGE);
-			}
-
-		} while (!depositAmt.matches("[0-9.]+"));
-
-		double money = Double.parseDouble(depositAmt);
-		file.println("\nDeposit amount: $" + money);
+		double money = getDepositAmt(file);
 
 		// account amount cannot supersede or excede this amount (1-1000000000)
 		if (money >= 1 && money < 1000000000) {
@@ -65,7 +52,7 @@ public class DepositFunds extends ATM {
 
 				if (money == 0) {
 					JOptionPane.showMessageDialog(null, "\nDeposit operation cancelled...");
-					file.printf("Deposit operation cancelled!");
+					file.print("Deposit operation cancelled!");
 				} else {
 					depositCash(file);
 				}
@@ -75,6 +62,29 @@ public class DepositFunds extends ATM {
 				depositCash(file);
 			}
 		}
+	}
+
+	/**
+	 * Obtains the desired deposit amount from the user
+	 * @param file the file we're logging to 
+	 * @return the deposit amount
+	 */
+	public double getDepositAmt(PrintWriter file) {
+		String depositAmt;
+
+		do {
+			depositAmt = JOptionPane.showInputDialog(null, "Deposit amount: $", "Deposit",
+					JOptionPane.QUESTION_MESSAGE);
+
+			if (!depositAmt.matches("[0-9.]+")) {
+				JOptionPane.showMessageDialog(null, "Invalid amount!", "Warning", JOptionPane.WARNING_MESSAGE);
+			}
+
+		} while (!depositAmt.matches("[0-9.]+"));
+
+		double money = Double.parseDouble(depositAmt);
+		file.println("\nDeposit amount: $" + money);
+		return money;
 	}
 
 	@Override

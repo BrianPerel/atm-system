@@ -26,21 +26,7 @@ public class WithdrawFunds extends ATM {
 	@Override
 	public void withdraw(PrintWriter file) throws IOException {
 
-		String money0;
-
-		// check for numeric input format, loop until correct format entered
-		do {
-			money0 = JOptionPane.showInputDialog(null, "Withdraw amount: $", "Withdraw",
-					JOptionPane.QUESTION_MESSAGE);
-
-			if (!money0.matches("[0-9.]+")) {
-				JOptionPane.showMessageDialog(null, "Invalid amount!", "Warning", JOptionPane.WARNING_MESSAGE);
-			}
-
-		} while (!money0.matches("[0-9.]+"));
-
-		final double money = Double.parseDouble(money0);
-		file.print("\n\tWithdraw amount: $" + money);
+		final double money = getWithdrawAmt(file);
 
 		// valid range
 		if (money > 0 && money < account.getBalance()) {
@@ -85,6 +71,25 @@ public class WithdrawFunds extends ATM {
 
 			withdraw(file);
 		}
+	}
+
+	public double getWithdrawAmt(PrintWriter file) {
+		String money0;
+
+		// check for numeric input format, loop until correct format entered
+		do {
+			money0 = JOptionPane.showInputDialog(null, "Withdraw amount: $", "Withdraw",
+					JOptionPane.QUESTION_MESSAGE);
+
+			if (!money0.matches("[0-9.]+")) {
+				JOptionPane.showMessageDialog(null, "Invalid amount!", "Warning", JOptionPane.WARNING_MESSAGE);
+			}
+
+		} while (!money0.matches("[0-9.]+"));
+
+		final double money = Double.parseDouble(money0);
+		file.print("\n\tWithdraw amount: $" + money);
+		return money;
 	}
 
 	@Override
