@@ -69,10 +69,9 @@ public class ATM_Machine extends JFrame {
 	public static void main(String[] args) throws IOException, SQLException {
 
 		// format date and time for display
-		DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("YYYY-MM-d-");
 		java.time.LocalDateTime now = java.time.LocalDateTime.now();
 
-		receiptFile = new File(new StringBuilder().append("Receipt.").append(now.format(dateTimeFormat)).append("id")
+		receiptFile = new File(new StringBuilder().append("Receipt.").append(now.format(DateTimeFormatter.ofPattern("YYYY-MM-d-"))).append("id")
 				.append(randomGenerator.nextInt(99)).append(".log").toString());
 		file = new PrintWriter(receiptFile);
 

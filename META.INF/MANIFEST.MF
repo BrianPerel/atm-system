@@ -1,5 +1,5 @@
+# jar file specifications
 Created-By: Brian Perel
 Main-Class: atm.ATM_Machine_Main
 Manifest-Version: 1.0
 Class-Path: mysql-connector-java-8.0.19.jar
-icon: atm.ico

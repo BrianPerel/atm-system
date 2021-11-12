@@ -55,8 +55,8 @@ public class DBConnector {
 						.append(argBalance).append("\'").append(",").append("\'").append(argAcctType).append("\'").append(")").toString());
 			System.out.println("Records added to database ");
 
-		} catch (SQLException ex) {
-			System.out.println(ex);
+		} catch (Exception e) {
+			System.out.println(e);
 		} 
 	}
 
@@ -78,8 +78,8 @@ public class DBConnector {
 		try {
 			con.createStatement().executeUpdate("DELETE FROM Accounts WHERE Account_Number= " + argAcctNumber);
 			System.out.println("Account deleted successfully...");
-		} catch (SQLException ex) {
-			System.out.println(ex);
+		} catch (SQLException e) {
+			System.out.println(e);
 		} 
 	}
 
@@ -91,6 +91,7 @@ public class DBConnector {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		System.out.println("Database deleted successfully...");
 	}
 }
