@@ -15,9 +15,9 @@ import javax.swing.JOptionPane;
  */
 public class DepositFunds extends ATM {
 	
-	static DecimalFormat formatter = new DecimalFormat("$###,###.00"); // for decimal rounding (to 2 places, plus $ and comma
-																// insertion)
 	private final Account account;
+	private static DecimalFormat formatter = new DecimalFormat("$###,###.00"); // for decimal rounding (to 2 places, plus $ and comma
+																// insertion)
 
 	public DepositFunds(Account account) {
 		super(account);
@@ -70,6 +70,7 @@ public class DepositFunds extends ATM {
 	 * @return the deposit amount
 	 */
 	public double getDepositAmt(PrintWriter file) {
+		
 		String depositAmt;
 
 		do {

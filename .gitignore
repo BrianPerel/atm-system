@@ -1,10 +1,10 @@
 /bin/
-build/
+/build/
+/Launch4j/
+/docs/
+/log/
+/target/
 *.class
-Launch4j/
-docs/
 *.dat
 *.log
 *.zip
-/log/
-/target/

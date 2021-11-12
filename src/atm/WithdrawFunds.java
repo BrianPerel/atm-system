@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 public class WithdrawFunds extends ATM {
 
 	private final Account account;
-	static DecimalFormat df = new DecimalFormat("$###,###.00");
+	private static DecimalFormat df = new DecimalFormat("$###,###.00");
 
 	public WithdrawFunds(Account account) {
 		super(account);

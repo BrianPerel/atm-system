@@ -34,9 +34,7 @@ public class DBConnector {
 																									// creating it, if
 																									// it didn't exist
 
-		} catch (SQLException ex) {
-			System.out.println(ex);
-		} catch (Exception e) {
+		} catch (SQLException | ClassNotFoundException e) {
 			System.out.println(e);
 		}
 	}
@@ -59,9 +57,7 @@ public class DBConnector {
 
 		} catch (SQLException ex) {
 			System.out.println(ex);
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+		} 
 	}
 
 	public void updateData(String argBal, int argAcctNumber) throws SQLException {
@@ -74,8 +70,6 @@ public class DBConnector {
 
 		} catch (SQLException ex) {
 			System.out.println(ex);
-		} catch (Exception e) {
-			System.out.println(e);
 		}
 	}
 
@@ -86,18 +80,17 @@ public class DBConnector {
 			System.out.println("Account deleted successfully...");
 		} catch (SQLException ex) {
 			System.out.println(ex);
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+		} 
 	}
 
 	public void deleteDB() {
 		// delete entire database
+ 
 		try {
 			con.createStatement().executeUpdate("DROP DATABASE atm_database");
-			System.out.println("Database deleted successfully...");
-		} catch (Exception e) {
-			System.out.println("Exception: " + e);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+		System.out.println("Database deleted successfully...");
 	}
 }

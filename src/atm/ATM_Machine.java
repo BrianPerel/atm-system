@@ -453,12 +453,8 @@ public class ATM_Machine extends JFrame {
 		
 		try {
 			process = Runtime.getRuntime().exec("C:\\xampp\\xampp-control.exe");
-		} catch (IOException e) {
-			e.printStackTrace();
-		} // create runtime instance to start and open xampp app
-		  try {
-			new DBConnector().deleteDB();
-		} catch (SQLException e) {
+			new DBConnector().deleteDB(); // create runtime instance to start and open xampp app
+		} catch (IOException | SQLException e) {
 			e.printStackTrace();
 		} 
 		

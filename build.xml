@@ -44,7 +44,7 @@
 		<launch4j>
 		  <config headerType="gui" outfile="ATM.exe" 
 		      dontWrapJar="false" jarPath="${jar.dir}/atm-${version.num}.jar" 
-		  	  icon="${res.dir}/atm.ico">
+		  	  icon="${res.dir}/graphics/atm.ico">
 		    <jre minVersion="${min.jre.version}">
 		        <opt>-Dlaunch4j.exedir="%EXEDIR%"</opt>
 		        <opt>-Dlaunch4j.exefile="%EXEFILE%"</opt>
