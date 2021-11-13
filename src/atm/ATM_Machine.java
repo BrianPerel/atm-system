@@ -70,19 +70,12 @@ public class ATM_Machine extends JFrame {
 
 		// format date and time for display
 		java.time.LocalDateTime now = java.time.LocalDateTime.now();
-
 		receiptFile = new File(new StringBuilder().append("Receipt.").append(now.format(DateTimeFormatter.ofPattern("YYYY-MM-d-"))).append("id")
 				.append(randomGenerator.nextInt(99)).append(".log").toString());
 		file = new PrintWriter(receiptFile);
 
-		int attempts = 0;
-
-		getAcctNumberPrompt(now, attempts);
-
-		attempts = 0;
-
-		getAcctPINNumberPrompt(attempts);
-
+		getAcctNumberPrompt(now, 0);
+		getAcctPinNumberPrompt(0);
 		getAcctTypePrompt();
 
 		if (acctTypeOption.equalsIgnoreCase("c") || acctTypeOption.equalsIgnoreCase("checkings")) {
@@ -110,6 +103,7 @@ public class ATM_Machine extends JFrame {
 				} while (acctTypeOption.isEmpty());
 
 			} catch (NullPointerException e) {
+				e.printStackTrace();
 				closeApp();
 			}
 
@@ -135,7 +129,7 @@ public class ATM_Machine extends JFrame {
 	 * Handles the retrieval of acct pin number from user
 	 * @param attempts tracks the number of attempts used to enter PIN
 	 */
-	public static void getAcctPINNumberPrompt(int attempts) {
+	public static void getAcctPinNumberPrompt(int attempts) {
 		do {
 			if (attempts == 3) {
 				JOptionPane.showMessageDialog(null, "Max tries exceeded, ATM System locked! Restart to unlock",
@@ -174,6 +168,7 @@ public class ATM_Machine extends JFrame {
 	 */
 	public static void getAcctNumberPrompt(java.time.LocalDateTime now, int attempts) {
 		DateTimeFormatter dateTimeFormat;
+		
 		do {
 			if (attempts == 3) {
 				JOptionPane.showMessageDialog(null, "Max tries exceeded, ATM System locked! Restart to unlock", "ATM",
@@ -195,6 +190,7 @@ public class ATM_Machine extends JFrame {
 				}
 
 			} catch (NullPointerException e) {
+				e.printStackTrace();
 				closeApp();
 			}
 
@@ -247,12 +243,11 @@ public class ATM_Machine extends JFrame {
 						JOptionPane.showMessageDialog(null, argAccount, "Balance Inquiry",
 								JOptionPane.INFORMATION_MESSAGE);
 						argFile.print("\nBalance inquiry...\n" + argAccount);
-						break;
+					} else {
+						JOptionPane.showMessageDialog(null, "Account is empty", WARNING, JOptionPane.WARNING_MESSAGE);
+						argFile.print("Balance inquiry...\n\tAccount doesn't exist");
 					}
-
-					JOptionPane.showMessageDialog(null, "Account is empty", WARNING, JOptionPane.WARNING_MESSAGE);
-					argFile.print("Balance inquiry...\n\tAccount doesn't exist");
-
+					
 					break;
 				}
 
@@ -261,11 +256,11 @@ public class ATM_Machine extends JFrame {
 					if (isAcctTerminated) {
 						JOptionPane.showMessageDialog(null, "Account is empty, can't withdraw!", WARNING,
 								JOptionPane.WARNING_MESSAGE);
-						continue;
+					} else {
+						AbstractATM w1 = new WithdrawFunds(argAccount);
+						w1.withdraw(argFile);
 					}
-
-					ATM w1 = new WithdrawFunds(argAccount);
-					w1.withdraw(argFile);
+					
 					break;
 				}
 
@@ -274,10 +269,11 @@ public class ATM_Machine extends JFrame {
 					if (isAcctTerminated) {
 						JOptionPane.showMessageDialog(null, "Account is empty, can't deposit!", WARNING,
 								JOptionPane.WARNING_MESSAGE);
-						continue;
+					} else {
+						AbstractATM d1 = new DepositFunds(argAccount);
+						d1.depositCash(argFile);
 					}
-					ATM d1 = new DepositFunds(argAccount);
-					d1.depositCash(argFile);
+					
 					break;
 				}
 
@@ -286,19 +282,17 @@ public class ATM_Machine extends JFrame {
 					if (isAcctTerminated) {
 						JOptionPane.showMessageDialog(null, "Account is already terminated!", WARNING,
 								JOptionPane.WARNING_MESSAGE);
-						continue;
+					} else {
+						connect.terminateAccount(Integer.parseInt(argAccount.getAcctNumber())); // deletes account from db
+																								// table @ localhost site
+						argAccount = null; // set account to value of null (clearing all attribute values)
+						JOptionPane.showMessageDialog(null, "Account has been terminated\n", "Account Termination",
+								JOptionPane.INFORMATION_MESSAGE);
+	
+						argFile.println("\nAccount has been terminated");
+						isAcctTerminated = true; // flip flag so that certain ops can't be done under a terminated account
 					}
-
-					connect.terminateAccount(Integer.parseInt(argAccount.getAcctNumber())); // deletes account from db
-																							// table @
-					// localhost site
-
-					argAccount = null; // set account to value of null (clearing all attribute values)
-					JOptionPane.showMessageDialog(null, "Account has been terminated\n", "Account Termination",
-							JOptionPane.INFORMATION_MESSAGE);
-
-					argFile.println("\nAccount has been terminated");
-					isAcctTerminated = true; // flip flag so that certain ops can't be done under a terminated account
+					
 					break;
 				}
 
@@ -307,23 +301,24 @@ public class ATM_Machine extends JFrame {
 					if (isAcctTerminated) {
 						JOptionPane.showMessageDialog(null, "Account is empty, can't transfer!", WARNING,
 								JOptionPane.WARNING_MESSAGE);
-						continue;
+					} else {
+						String acctNo2;
+	
+						do {
+							acctNo2 = JOptionPane.showInputDialog(null, "\nAccount Number 2: ", "Account Terminated",
+									JOptionPane.QUESTION_MESSAGE);
+							if (acctNumber.equals(acctNo2) || acctNo2.length() != 8
+									|| !(acctNo2.matches(ZERO_TO_NINE_REG_EXP))) {
+								JOptionPane.showMessageDialog(null, "Invalid Account!", WARNING,
+										JOptionPane.WARNING_MESSAGE);
+							}
+						} while (acctNumber.equals(acctNo2)
+								|| (acctNo2.length() != 8 || !(acctNo2.matches(ZERO_TO_NINE_REG_EXP))));
+						Account account2 = new Account(acctNo2, pin, (Math.random() % 21) * 100000, argAcctTypeOption);
+						AbstractATM t1 = new TransferFunds(argAccount, account2);
+						t1.transferFunds(acctNo2, argFile);
 					}
-					String acctNo2;
-
-					do {
-						acctNo2 = JOptionPane.showInputDialog(null, "\nAccount Number 2: ", "Account Terminated",
-								JOptionPane.QUESTION_MESSAGE);
-						if (acctNumber.equals(acctNo2) || acctNo2.length() != 8
-								|| !(acctNo2.matches(ZERO_TO_NINE_REG_EXP))) {
-							JOptionPane.showMessageDialog(null, "Invalid Account!", WARNING,
-									JOptionPane.WARNING_MESSAGE);
-						}
-					} while (acctNumber.equals(acctNo2)
-							|| (acctNo2.length() != 8 || !(acctNo2.matches(ZERO_TO_NINE_REG_EXP))));
-					Account account2 = new Account(acctNo2, pin, (Math.random() % 21) * 100000, argAcctTypeOption);
-					ATM t1 = new TransferFunds(argAccount, account2);
-					t1.transferFunds(acctNo2, argFile);
+					
 					break;
 				}
 
@@ -388,6 +383,7 @@ public class ATM_Machine extends JFrame {
 						JOptionPane.WARNING_MESSAGE);
 				input.nextLine();
 			} catch (NullPointerException e) {
+				e.printStackTrace();
 				processToOpenXampp.destroy(); // close xampp app
 				closeApp();
 			}
@@ -400,16 +396,16 @@ public class ATM_Machine extends JFrame {
 			// Save object state to a binary file
 			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("AccountData.dat"));
 
-			// method for object serialization
-			out.writeObject(argAccount);
+			out.writeObject(argAccount); 			
 
 			// close serialization process
 			out.close();
 
 			JOptionPane.showMessageDialog(null, "\nObject has been serialized", "Serialize",
 					JOptionPane.QUESTION_MESSAGE);
-		} catch (IOException ex) {
+		} catch (IOException e) {
 			System.out.println("IOException is caught");
+			e.printStackTrace();
 		}
 	}
 
@@ -417,7 +413,6 @@ public class ATM_Machine extends JFrame {
 		// Deserialization process
 		try {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream("AccountData.dat"));
-
 			Account account1 = (Account) in.readObject(); // store the content from binary file to a reference
 			// variable (object)
 			// after reading = deserialize
@@ -432,9 +427,11 @@ public class ATM_Machine extends JFrame {
 
 			in.close();
 
-		} catch (IOException ex) {
+		} catch (IOException e) {
+			e.printStackTrace();
 			System.out.println("Deserialization error!");
-		} catch (ClassNotFoundException ex) {
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 			System.out.println("Class not found error!");
 		}
 	}

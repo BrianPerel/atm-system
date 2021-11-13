@@ -14,16 +14,16 @@ import javax.swing.JOptionPane;
  * boundary range and format, perform op -performs file write while class is
  * executed
  */
-public class TransferFunds extends ATM {
+public class TransferFunds extends AbstractATM {
 
-	private final Account account, account2; // first account, transfer funds from. second account, transfer funds to
+	private final Account account, accountTwo; // first account, transfer funds from. second account, transfer funds to
 	private static DecimalFormat df = new DecimalFormat("$###,###.00"); // formatting to make values include a '$', commas, and
 																// rounding to 2 places
 
-	public TransferFunds(Account account, Account account2) {
-		super(account);
-		this.account = account;
-		this.account2 = account2;
+	public TransferFunds(Account argAccount, Account argAccountTwo) {
+		super(argAccount);
+		this.account = argAccount;
+		this.accountTwo = argAccountTwo;
 	}
 
 	@Override
@@ -40,13 +40,13 @@ public class TransferFunds extends ATM {
 					new StringBuilder("\nTransfer complete!\n\nYour New Balance for Account 1 (")
 						.append(account.getAcctNumber()).append(") is: ")
 						.append(df.format(this.account.getBalance())).append("\nYour New Balance for Account 2 (")
-						.append(this.account2.getAcctNumber()).append(") is: ")
-						.append(df.format(this.account2.getBalance())),
+						.append(this.accountTwo.getAcctNumber()).append(") is: ")
+						.append(df.format(this.accountTwo.getBalance())),
 					"ATM - City Central Bank", JOptionPane.QUESTION_MESSAGE);
 
 			file.print("Transfer complete! Your New Balance for Account " + account.getAcctNumber() + " is: "
 					+ df.format(this.account.getBalance()) + "\nYour New Balance for Account "
-					+ this.account2.getAcctNumber() + " is: " + df.format(this.account2.getBalance()));
+					+ this.accountTwo.getAcctNumber() + " is: " + df.format(this.accountTwo.getBalance()));
 
 			// update db record in table (since withdraw op performed on account)
 			try {

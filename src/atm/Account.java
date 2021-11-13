@@ -1,10 +1,13 @@
 package atm;
 
+import java.io.Serializable;
+
 /**
  * Class to setup Account object, operations Attributes: account type, number, pin, balance
  */
-public class Account {
+public class Account implements Serializable {
 
+	private static final long serialVersionUID = -9178301191101564867L;
 	private int hashCodeNumber;
 	private String acctNumber;
 	private String acctPin;

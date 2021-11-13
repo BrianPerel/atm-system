@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  * operations -prompt for withdraw amount, check valid range and format, perform
  * op -program writes to file while class is executed
  */
-public class WithdrawFunds extends ATM {
+public class WithdrawFunds extends AbstractATM {
 
 	private final Account account;
 	private static DecimalFormat df = new DecimalFormat("$###,###.00");

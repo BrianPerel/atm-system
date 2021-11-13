@@ -35,6 +35,7 @@ public class DBConnector {
 																									// it didn't exist
 
 		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
 			System.out.println(e);
 		}
 	}
@@ -56,6 +57,7 @@ public class DBConnector {
 			System.out.println("Records added to database ");
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println(e);
 		} 
 	}
@@ -68,8 +70,9 @@ public class DBConnector {
 					"UPDATE Accounts SET Account_Balance= " + "\'" + argBal + "\'" + " WHERE Account_Number=" + argAcctNumber);
 			System.out.println("Record updated successfully...");
 
-		} catch (SQLException ex) {
-			System.out.println(ex);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println(e);
 		}
 	}
 
@@ -79,6 +82,7 @@ public class DBConnector {
 			con.createStatement().executeUpdate("DELETE FROM Accounts WHERE Account_Number= " + argAcctNumber);
 			System.out.println("Account deleted successfully...");
 		} catch (SQLException e) {
+			e.printStackTrace();
 			System.out.println(e);
 		} 
 	}
