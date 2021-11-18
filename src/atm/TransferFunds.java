@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  * boundary range and format, perform op -performs file write while class is
  * executed
  */
-public class TransferFunds extends AbstractATM {
+public class TransferFunds extends AbstractAtm {
 
 	private final Account account, accountTwo; // first account, transfer funds from. second account, transfer funds to
 	private static DecimalFormat df = new DecimalFormat("$###,###.00"); // formatting to make values include a '$', commas, and

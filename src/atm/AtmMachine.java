@@ -50,13 +50,13 @@ import javax.swing.JPasswordField;
  * ATM_Machine class will generate GUI Performs logic operations for data and
  * choices entered
  */
-public class ATM_Machine extends JFrame {
+public class AtmMachine extends JFrame {
 
 	private static String acctNumber;
 	private static String pin = "";
 	private static String acctTypeOption;
 	private static File receiptFile = new File("");
-	private static PrintWriter file = null;
+	private static PrintWriter file;
 	private static final String WARNING = "Warning";
 	private static final String GOODBYE = "Goodbye";
 	private static final String ZERO_TO_NINE_REG_EXP = "[0-9]+";
@@ -89,7 +89,7 @@ public class ATM_Machine extends JFrame {
 				receiptFile);
 	}
 
-	public static void getAcctTypePrompt() {
+	private static void getAcctTypePrompt() {
 		do {
 			try {
 				do {
@@ -129,7 +129,7 @@ public class ATM_Machine extends JFrame {
 	 * Handles the retrieval of acct pin number from user
 	 * @param attempts tracks the number of attempts used to enter PIN
 	 */
-	public static void getAcctPinNumberPrompt(int attempts) {
+	private static void getAcctPinNumberPrompt(int attempts) {
 		do {
 			if (attempts == 3) {
 				JOptionPane.showMessageDialog(null, "Max tries exceeded, ATM System locked! Restart to unlock",
@@ -166,7 +166,7 @@ public class ATM_Machine extends JFrame {
 	 * @param now the current date and time
 	 * @param attempts tracks the number of attempts used to enter PIN
 	 */
-	public static void getAcctNumberPrompt(java.time.LocalDateTime now, int attempts) {
+	private static void getAcctNumberPrompt(java.time.LocalDateTime now, int attempts) {
 		DateTimeFormatter dateTimeFormat;
 		
 		do {
@@ -257,7 +257,7 @@ public class ATM_Machine extends JFrame {
 						JOptionPane.showMessageDialog(null, "Account is empty, can't withdraw!", WARNING,
 								JOptionPane.WARNING_MESSAGE);
 					} else {
-						AbstractATM w1 = new WithdrawFunds(argAccount);
+						AbstractAtm w1 = new WithdrawFunds(argAccount);
 						w1.withdraw(argFile);
 					}
 					
@@ -270,7 +270,7 @@ public class ATM_Machine extends JFrame {
 						JOptionPane.showMessageDialog(null, "Account is empty, can't deposit!", WARNING,
 								JOptionPane.WARNING_MESSAGE);
 					} else {
-						AbstractATM d1 = new DepositFunds(argAccount);
+						AbstractAtm d1 = new DepositFunds(argAccount);
 						d1.depositCash(argFile);
 					}
 					
@@ -315,7 +315,7 @@ public class ATM_Machine extends JFrame {
 						} while (acctNumber.equals(acctNo2)
 								|| (acctNo2.length() != 8 || !(acctNo2.matches(ZERO_TO_NINE_REG_EXP))));
 						Account account2 = new Account(acctNo2, pin, (Math.random() % 21) * 100000, argAcctTypeOption);
-						AbstractATM t1 = new TransferFunds(argAccount, account2);
+						AbstractAtm t1 = new TransferFunds(argAccount, account2);
 						t1.transferFunds(acctNo2, argFile);
 					}
 					
