@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -70,6 +71,7 @@ public class AtmMachine extends JFrame {
 
 		// format date and time for display
 		java.time.LocalDateTime now = java.time.LocalDateTime.now();
+		
 		receiptFile = new File(new StringBuilder().append("Receipt.").append(now.format(DateTimeFormatter.ofPattern("YYYY-MM-d-"))).append("id")
 				.append(randomGenerator.nextInt(99)).append(".log").toString());
 		file = new PrintWriter(receiptFile);
@@ -222,7 +224,7 @@ public class AtmMachine extends JFrame {
 		Process processToOpenXampp = Runtime.getRuntime().exec("C:\\xampp\\xampp-control.exe");
 
 		// create connection ptr to database
-		DBConnector connect = new DBConnector(); // connect class to DB class to perform db operations
+		DbConnector connect = new DbConnector(); // connect class to DB class to perform db operations
 		connect.addData(Integer.parseInt(acctNumber), Integer.parseInt(pin), df.format(argAccount.getBalance()),
 				argAcctTypeOption); // add data to db
 
@@ -356,7 +358,12 @@ public class AtmMachine extends JFrame {
 					argFile.close();
 
 					if (in.equalsIgnoreCase("no") || in.equalsIgnoreCase("n") || in.equalsIgnoreCase("cancel")) {
-						argReceiptFile.delete();
+						try {
+							Files.delete(argReceiptFile.toPath());
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						
 						JOptionPane.showMessageDialog(null, "\nHave a nice day!", GOODBYE,
 								JOptionPane.QUESTION_MESSAGE);
 						System.exit(0);
@@ -438,7 +445,13 @@ public class AtmMachine extends JFrame {
 
 	public static void closeApp() {
 		file.close();
-		receiptFile.delete();
+
+		try {
+			Files.delete(receiptFile.toPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+			e.getMessage();
+		}
 		System.exit(0);
 	}
 
@@ -449,7 +462,7 @@ public class AtmMachine extends JFrame {
 		
 		try {
 			process = Runtime.getRuntime().exec("C:\\xampp\\xampp-control.exe");
-			new DBConnector().deleteDB(); // create runtime instance to start and open xampp app
+			new DbConnector().deleteDB(); // create runtime instance to start and open xampp app
 		} catch (IOException | SQLException e) {
 			e.printStackTrace();
 		} 

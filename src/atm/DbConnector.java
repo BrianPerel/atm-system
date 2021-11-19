@@ -8,11 +8,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBConnector {
+public class DbConnector {
 
 	private Connection con;
 
-	public DBConnector() throws SQLException { // constructor -> establishes connection and creates DB (NOTE: make sure
+	public DbConnector() throws SQLException { // constructor -> establishes connection and creates DB (NOTE: make sure
 												// to launch apache and mysql)
 
 		try {

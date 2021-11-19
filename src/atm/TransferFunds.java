@@ -52,7 +52,7 @@ public class TransferFunds extends AbstractAtm {
 			try {
 				// create connection ptr to database
 				// connect class to DB class to perform db operations and add data to db
-				new DBConnector().updateData(df.format(account.getBalance()), Integer.parseInt(account.getAcctNumber())); 
+				new DbConnector().updateData(df.format(account.getBalance()), Integer.parseInt(account.getAcctNumber())); 
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
