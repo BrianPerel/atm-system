@@ -99,6 +99,10 @@ public class AtmMachine extends JFrame {
 				do {
 					acctTypeOption = JOptionPane.showInputDialog(null, "Savings (s) or Checkings (c): ", HEADER_TITLE,
 							JOptionPane.QUESTION_MESSAGE);
+					
+					if(acctTypeOption == null) {
+						closeApp();
+					}
 
 					if (acctTypeOption.isEmpty()) {
 						JOptionPane.showMessageDialog(null, "Invalid Response!", WARNING, JOptionPane.WARNING_MESSAGE);
@@ -187,9 +191,8 @@ public class AtmMachine extends JFrame {
 				acctNumber = JOptionPane.showInputDialog(null,
 						"Today is: ".concat(now.format(dateTimeFormat)).concat("\nAccount Number: "), HEADER_TITLE,
 						JOptionPane.QUESTION_MESSAGE);
-
-				if (acctNumber.equalsIgnoreCase("cancel")) {
-					JOptionPane.showMessageDialog(null, "Have a nice day!", GOODBYE, JOptionPane.QUESTION_MESSAGE);
+								
+				if (acctNumber == null) {
 					closeApp();
 				}
 
@@ -239,6 +242,10 @@ public class AtmMachine extends JFrame {
 								.concat(" (5) to transfer funds\n\t6. (6) (Save) Serialize Account")
 								.concat("\n\t7. (7) (Load) Deserialize Account \n\t8. (8) to quit\n\n\tSelect your transaction: \n"),
 						HEADER_TITLE, JOptionPane.QUESTION_MESSAGE);
+				
+				if(argSelect == null) {
+					closeApp();
+				}
 
 				switch (argSelect) {
 				// balance inquiry
@@ -311,6 +318,11 @@ public class AtmMachine extends JFrame {
 						do {
 							acctNo2 = JOptionPane.showInputDialog(null, "\nAccount Number 2: ", "Account Terminated",
 									JOptionPane.QUESTION_MESSAGE);
+							
+							if(acctNo2 == null) {
+								closeApp();
+							}
+							
 							if (acctNumber.equals(acctNo2) || acctNo2.length() != 8
 									|| !(acctNo2.matches(ZERO_TO_NINE_REG_EXP))) {
 								JOptionPane.showMessageDialog(null, "Invalid Account!", WARNING,
@@ -357,6 +369,10 @@ public class AtmMachine extends JFrame {
 					String in = "";
 					in = JOptionPane.showInputDialog(null, "\nWould you like a receipt? ", "Receipt?",
 							JOptionPane.QUESTION_MESSAGE);
+					
+					if(in == null) {
+						closeApp();
+					}
 
 					argFile.close();
 

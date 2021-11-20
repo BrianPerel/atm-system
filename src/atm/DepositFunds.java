@@ -76,6 +76,10 @@ public class DepositFunds extends AbstractAtm {
 		do {
 			depositAmt = JOptionPane.showInputDialog(null, "Deposit amount: $", "Deposit",
 					JOptionPane.QUESTION_MESSAGE);
+			
+			if(depositAmt == null) {
+				AtmMachine.closeApp();
+			}
 
 			if (!depositAmt.matches("[0-9.]+")) {
 				JOptionPane.showMessageDialog(null, "Invalid amount!", "Warning", JOptionPane.WARNING_MESSAGE);
