@@ -40,20 +40,21 @@ public class DbConnector {
 		}
 	}
 
-	public void addData(int argAcctNumber, int argPin, String argBalance, String argAcctType) throws SQLException {
+	public void addData(String argCreationDate, int argAcctNumber, int argPin, String argBalance, String argAcctType) throws SQLException {
 
 		try {
 			// create table
 			System.out.println("Creating table...");
 			con.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS Accounts "
-					+ "(Account_Number INT PRIMARY KEY, Pin INT, Account_Balance VARCHAR(30), Account_Type VARCHAR(30))");
+					+ "(Account_Creation_Date VARCHAR(30), Account_Number INT PRIMARY KEY, Pin INT, Account_Balance VARCHAR(30), Account_Type VARCHAR(30))");
 			System.out.println("Table created successfully...");
-
+			
 			// insert data values into table
 			con.createStatement().executeUpdate(
-					new StringBuilder().append("INSERT INTO Accounts (Account_Number, Pin, Account_Balance, Account_Type) ")
-						.append("VALUES (").append(argAcctNumber).append(",").append(argPin).append(",").append("\'")
-						.append(argBalance).append("\'").append(",").append("\'").append(argAcctType).append("\'").append(")").toString());
+					new StringBuilder().append("INSERT INTO Accounts (Account_Creation_Date, Account_Number, Pin, Account_Balance, Account_Type)")
+						.append("VALUES (").append("\'").append(argCreationDate).append("\'").append(", ").append(argAcctNumber).append(", ")
+						.append(argPin).append(", ").append("\'").append(argBalance).append("\'").append(", ").append("\'")
+						.append(argAcctType).append("\'").append(")").toString());
 			System.out.println("Records added to database ");
 
 		} catch (Exception e) {

@@ -85,9 +85,11 @@ public class AtmMachine extends JFrame {
 		} else if (acctTypeOption.equalsIgnoreCase("s") || acctTypeOption.equalsIgnoreCase("savings")) {
 			acctTypeOption = "Savings";
 		}
+		
+		String acctCreationDate = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy hh:mm a"));
 
 		// load to menu the new account as you create it
-		displayMenu(new Account(acctNumber, pin, ((Math.random() % 23) * 100000), acctTypeOption), file, "0", acctTypeOption,
+		displayMenu(acctCreationDate, new Account(acctNumber, pin, ((Math.random() % 23) * 100000), acctTypeOption), file, "0", acctTypeOption,
 				receiptFile);
 	}
 
@@ -216,16 +218,16 @@ public class AtmMachine extends JFrame {
 	 * @throws IOException
 	 * @throws SQLException
 	 */
-	public static void displayMenu(Account argAccount, PrintWriter argFile, String argSelect, String argAcctTypeOption,
+	public static void displayMenu(String argCreationDate, Account argAccount, PrintWriter argFile, String argSelect, String argAcctTypeOption,
 			File argReceiptFile) throws IOException, SQLException {
 		boolean isAcctTerminated = false; // flag checks if account has been terminated by user or not
-
+		
 		// open xampp app
 		Process processToOpenXampp = Runtime.getRuntime().exec("C:\\xampp\\xampp-control.exe");
 
 		// create connection ptr to database
 		DbConnector connect = new DbConnector(); // connect class to DB class to perform db operations
-		connect.addData(Integer.parseInt(acctNumber), Integer.parseInt(pin), df.format(argAccount.getBalance()),
+		connect.addData(argCreationDate, Integer.parseInt(acctNumber), Integer.parseInt(pin), df.format(argAccount.getBalance()),
 				argAcctTypeOption); // add data to db
 
 		do {
@@ -352,7 +354,8 @@ public class AtmMachine extends JFrame {
 				case "8": {
 					argFile.print("\n\n\nHave a nice day!");
 					processToOpenXampp.destroy(); // close xampp app
-					String in = JOptionPane.showInputDialog(null, "\nWould you like a receipt? ", "Receipt?",
+					String in = "";
+					in = JOptionPane.showInputDialog(null, "\nWould you like a receipt? ", "Receipt?",
 							JOptionPane.QUESTION_MESSAGE);
 
 					argFile.close();

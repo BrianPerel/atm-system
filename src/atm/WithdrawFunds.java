@@ -80,7 +80,7 @@ public class WithdrawFunds extends AbstractAtm {
 		do {
 			money0 = JOptionPane.showInputDialog(null, "Withdraw amount: $", "Withdraw",
 					JOptionPane.QUESTION_MESSAGE);
-
+			
 			if (!money0.matches("[0-9.]+")) {
 				JOptionPane.showMessageDialog(null, "Invalid amount!", "Warning", JOptionPane.WARNING_MESSAGE);
 			}
