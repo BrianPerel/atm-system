@@ -413,7 +413,7 @@ public class AtmMachine extends JFrame {
 				processToOpenXampp.destroy(); // close xampp app
 				closeApp();
 			}
-		} while (!argSelect.equals("8"));
+		} while (argSelect != null && !argSelect.equals("8"));
 	}
 
 	public static void serialize(Account argAccount) {

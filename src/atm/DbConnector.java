@@ -21,16 +21,16 @@ public class DbConnector {
 			System.out.println("Connecting to database...");
 
 			// open a connection to localhost and select our database. String literal is
-			// localhost URL, username=root, pass="". If database doesn't exist, exception
+			// localhost URL, username=User, pass=jkV2q]VNsmNnE!m. If database doesn't exist, exception
 			// is caught and we just connect to the localhost without selecting a db
-			con = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "");
+			con = DriverManager.getConnection("jdbc:mysql://localhost/", "User", "jkV2q]VNsmNnE!m");
 
 			// create database
 			System.out.println("Creating database...");
 			// execute a query
 			con.createStatement().executeUpdate("CREATE DATABASE IF NOT EXISTS atm_database");
 			System.out.println("Database created successfully...");
-			con = DriverManager.getConnection("jdbc:mysql://localhost/atm_database", "root", ""); // select db after
+			con = DriverManager.getConnection("jdbc:mysql://localhost/atm_database", "User", "jkV2q]VNsmNnE!m"); // select db after
 																									// creating it, if
 																									// it didn't exist
 
