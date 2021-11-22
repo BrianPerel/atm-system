@@ -19,24 +19,24 @@ public class DbConnector {
 			// link mysql jdbc jar file to class (register JDBC driver)
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			System.out.println("Connecting to database...");
+			String user = "User", password = "jkV2q]VNsmNnE!m";
 
 			// open a connection to localhost and select our database. String literal is
 			// localhost URL, username=User, pass=jkV2q]VNsmNnE!m. If database doesn't exist, exception
 			// is caught and we just connect to the localhost without selecting a db
-			con = DriverManager.getConnection("jdbc:mysql://localhost/", "User", "jkV2q]VNsmNnE!m");
+			con = DriverManager.getConnection("jdbc:mysql://localhost/", user, password);
 
 			// create database
 			System.out.println("Creating database...");
 			// execute a query
 			con.createStatement().executeUpdate("CREATE DATABASE IF NOT EXISTS atm_database");
 			System.out.println("Database created successfully...");
-			con = DriverManager.getConnection("jdbc:mysql://localhost/atm_database", "User", "jkV2q]VNsmNnE!m"); // select db after
+			con = DriverManager.getConnection("jdbc:mysql://localhost/atm_database", user, password); // select db after
 																									// creating it, if
 																									// it didn't exist
 
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
-			System.out.println(e);
 		}
 	}
 
@@ -59,7 +59,6 @@ public class DbConnector {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e);
 		} 
 	}
 
@@ -73,7 +72,6 @@ public class DbConnector {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println(e);
 		}
 	}
 
@@ -84,7 +82,6 @@ public class DbConnector {
 			System.out.println("Account deleted successfully...");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println(e);
 		} 
 	}
 

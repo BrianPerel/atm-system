@@ -430,7 +430,6 @@ public class AtmMachine extends JFrame {
 			JOptionPane.showMessageDialog(null, "\nObject has been serialized", "Serialize",
 					JOptionPane.QUESTION_MESSAGE);
 		} catch (IOException e) {
-			System.out.println("IOException is caught");
 			e.printStackTrace();
 		}
 	}
@@ -469,7 +468,6 @@ public class AtmMachine extends JFrame {
 			Files.delete(receiptFile.toPath());
 		} catch (IOException e) {
 			e.printStackTrace();
-			e.getMessage();
 		}
 		System.exit(0);
 	}
