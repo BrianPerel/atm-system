@@ -22,8 +22,7 @@ public class DbConnector {
 			String user = "User", password = "jkV2q]VNsmNnE!m";
 
 			// open a connection to localhost and select our database. String literal is
-			// localhost URL, username=User, pass=jkV2q]VNsmNnE!m. If database doesn't exist, exception
-			// is caught and we just connect to the localhost without selecting a db
+			// localhost URL, username=User, pass=jkV2q]VNsmNnE!m. If database doesn't exist create it then access it
 			con = DriverManager.getConnection("jdbc:mysql://localhost/", user, password);
 
 			// create database
