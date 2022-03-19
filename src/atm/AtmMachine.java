@@ -72,7 +72,13 @@ public class AtmMachine extends JFrame {
 		// format date and time for display
 		java.time.LocalDateTime now = java.time.LocalDateTime.now();
 		
-		receiptFile = new File(new StringBuilder().append("Receipt.").append(now.format(DateTimeFormatter.ofPattern("YYYY-MM-d-"))).append("id")
+		// creates root directory 'log' if it doesn't already exist
+		File theDir = new File("log");
+		if (!theDir.exists()){
+		    theDir.mkdirs();
+		}
+		
+		receiptFile = new File(new StringBuilder("log/").append("Receipt.").append(now.format(DateTimeFormatter.ofPattern("yyyy-MM-d-"))).append("id")
 				.append(randomGenerator.nextInt(99)).append(".log").toString());
 		file = new PrintWriter(receiptFile);
 
@@ -223,6 +229,7 @@ public class AtmMachine extends JFrame {
 	 */
 	public static void displayMenu(String argCreationDate, Account argAccount, PrintWriter argFile, String argSelect, String argAcctTypeOption,
 			File argReceiptFile) throws IOException, SQLException {
+		
 		boolean isAcctTerminated = false; // flag checks if account has been terminated by user or not
 		
 		// open xampp app

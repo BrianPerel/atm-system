@@ -16,18 +16,20 @@ public class DbConnector {
 												// to launch apache and mysql)
 
 		try {
-			// link mysql jdbc jar file to class (register JDBC driver)
+			// link mysql jdbc jar driver file to your class, to connect to data sources 
 			Class.forName("com.mysql.cj.jdbc.Driver");
+			
 			System.out.println("Connecting to database...");
-			String user = "User", password = "jkV2q]VNsmNnE!m";
+			String url = "jdbc:mysql://localhost/";
+			String user = "Brian";
+			String password = "jkV2q]VNsmNnE!m";
 
-			// open a connection to localhost and select our database. String literal is
-			// localhost URL, username=User, pass=jkV2q]VNsmNnE!m. If database doesn't exist create it then access it
-			con = DriverManager.getConnection("jdbc:mysql://localhost/", user, password);
+			// open a connection to the data source and select our database
+			con = DriverManager.getConnection(url, user, password); 
 
-			// create database
 			System.out.println("Creating database...");
-			// execute a query
+
+			// if database doesn't exist create it then access it
 			con.createStatement().executeUpdate("CREATE DATABASE IF NOT EXISTS atm_database");
 			System.out.println("Database created successfully...");
 			con = DriverManager.getConnection("jdbc:mysql://localhost/atm_database", user, password); // select db after

@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 public class WithdrawFunds extends AbstractAtm {
 
 	private final Account account;
-	private static DecimalFormat df = new DecimalFormat("$###,###.00");
+	private DecimalFormat df = new DecimalFormat("$###,###.00");
 
 	public WithdrawFunds(Account account) {
 		super(account);
@@ -27,7 +27,7 @@ public class WithdrawFunds extends AbstractAtm {
 	public void withdraw(PrintWriter file) throws IOException {
 
 		final double money = getWithdrawAmt(file);
-
+		
 		// valid range
 		if (money > 0 && money < account.getBalance()) {
 			this.account.setBalance(this.account.getBalance() - money);
@@ -83,9 +83,10 @@ public class WithdrawFunds extends AbstractAtm {
 			
 			if(money0 == null) {
 				AtmMachine.closeApp();
+				break;
 			}
 			
-			if (!money0.matches("[0-9.]+")) {
+			else if (!money0.matches("[0-9.]+")) {
 				JOptionPane.showMessageDialog(null, "Invalid amount!", "Warning", JOptionPane.WARNING_MESSAGE);
 			}
 

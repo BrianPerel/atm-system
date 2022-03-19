@@ -16,7 +16,8 @@ import javax.swing.JOptionPane;
  */
 public class TransferFunds extends AbstractAtm {
 
-	private final Account account, accountTwo; // first account, transfer funds from. second account, transfer funds to
+	private final Account account;
+	private final Account accountTwo; // first account, transfer funds from. second account, transfer funds to
 	private static DecimalFormat df = new DecimalFormat("$###,###.00"); // formatting to make values include a '$', commas, and
 																// rounding to 2 places
 
